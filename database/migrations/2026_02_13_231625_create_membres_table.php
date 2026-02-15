@@ -14,10 +14,11 @@ return new class extends Migration {
             $table->id();
             $table->string('nom');
             $table->string('prenom');
-            $table->string('mail')->unique();
-            $table->string('identifiant')->unique();
-            $table->string('mdp');
             $table->timestamp('date_creation_compte')->nullable();
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
         });
     }
 
