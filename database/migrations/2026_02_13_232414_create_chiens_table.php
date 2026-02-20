@@ -16,9 +16,9 @@ return new class extends Migration {
             $table->integer('age');
             $table->string('race');
 
-            $table->foreignId('id_membre')
-                ->constrained('membres')
-                ->onDelete('cascade');
+            $table->foreignId('membre_id')
+                ->constrained()
+                ->cascadeOnDelete();
         });
     }
 

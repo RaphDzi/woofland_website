@@ -30,21 +30,65 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'identifiant' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9_-]+$/'],
+            'nom' => ['required', 'string', 'max:255'],
+            'prenom' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => [
+                'required',
+                'confirmed',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&#]/',
+            ],
+            'voie' => ['required', 'string', 'max:255'],
+            'ville' => ['required', 'string', 'max:255'],
+            'code_postal' => ['required', 'digits:5'],
+            'chiens.*.nom' => ['required', 'string'],
+            'chiens.*.age' => ['required', 'integer'],
+            'chiens.*.race' => ['required', 'string'],
         ]);
 
+
+
+        // 1️⃣ Création User
         $user = User::create([
-            'name' => $request->name,
+            'identifiant' => $request->identifiant,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'membre',
         ]);
+
+        // 2️⃣ Création Membre
+        $membre = $user->membre()->create([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'date_creation_compte' => now(),
+        ]);
+
+        // 3️⃣ Adresse
+        $membre->adresse()->create([
+            'voie' => $request->voie,
+            'ville' => $request->ville,
+            'code_postal' => $request->code_postal,
+            'complement' => $request->complement,
+        ]);
+
+        // 4️⃣ Chiens (1 ou plusieurs)
+        foreach ($request->chiens as $chien) {
+            $membre->chiens()->create([
+                'nom' => $chien['nom'],
+                'age' => $chien['age'],
+                'race' => $chien['race'],
+            ]);
+        }
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('dashboard');
     }
 }

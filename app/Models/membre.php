@@ -22,12 +22,12 @@ class Membre extends Model
 
     public function adresse()
     {
-        return $this->hasOne(Adresse::class, 'id_membre');
+        return $this->hasOne(Adresse::class);
     }
 
     public function chiens()
     {
-        return $this->hasMany(Chien::class, 'id_membre');
+        return $this->hasMany(Chien::class);
     }
 
     public function cours()
