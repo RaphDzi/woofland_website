@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\TwoFactorController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,4 +27,7 @@ Route::get('/register', [RegisteredUserController::class, 'create'])
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest');
 
-require __DIR__.'/auth.php';
+Route::get('/2fa', [TwoFactorController::class, 'form'])->name('2fa.form');
+Route::post('/2fa', [TwoFactorController::class, 'verify'])->name('2fa.verify');
+
+require __DIR__ . '/auth.php';
