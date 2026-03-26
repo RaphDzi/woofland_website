@@ -43,6 +43,7 @@ class RegisteredUserController extends Controller
                     ->numbers()
                     ->symbols()
             ],
+            'phone' => ['required', 'string', 'max:20'],
             'voie' => ['required', 'string', 'max:255'],
             'ville' => ['required', 'string', 'max:255'],
             'code_postal' => ['required', 'digits:5'],
@@ -58,6 +59,7 @@ class RegisteredUserController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'phone' => $request->phone,
             'role' => 'membre',
         ]);
 

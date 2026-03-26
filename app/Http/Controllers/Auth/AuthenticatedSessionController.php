@@ -26,9 +26,24 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        $user = Auth::user();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        Auth::logout();
+
+        $code = random_int(100000, 999999);
+
+        session([
+            '2fa_user_id' => $user->id,
+            '2fa_code' => $code,
+            '2fa_expires_at' => now()->addMinutes(5),
+        ]);
+
+        app(\App\Services\SmsService::class)->send(
+            $user->phone,
+            "Ton code de connexion est : $code"
+        );
+
+        return redirect()->route('2fa.form');
     }
 
     /**

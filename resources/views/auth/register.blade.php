@@ -1,14 +1,6 @@
 <x-guest-layout>
     <div class="min-h-screen bg-white">
-        @if ($errors->any())
-            <div class="mb-4 text-red-600">
-                <ul class="list-disc pl-5">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+
 
         <!-- CARD -->
         <div class="max-w-6xl mx-auto mt-16 bg-gray-100 border border-black p-10 rounded-xl">
@@ -16,6 +8,16 @@
             <h2 class="text-2xl font-bold text-center mb-8">
                 Inscription
             </h2>
+
+            @if ($errors->any())
+                <div class="mb-4 text-red-600">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form method="POST" action="{{ route('register') }}" class="space-y-12">
                 @csrf
@@ -50,6 +52,12 @@
                                 <x-required-input-red-star for="username" value="Identifiant" required />
                                 <x-text-input id="username" name="username" type="text" class="mt-1 block w-full"
                                     :value="old('username')" required />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star for="phone" value="Numéro de téléphone" required />
+                                <x-text-input id="phone" name="phone" type="tel" class="mt-1 block w-full"
+                                    :value="old('phone')" required />
                             </div>
 
                             <div>
