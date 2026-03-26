@@ -1,276 +1,288 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
-
-        <!-- Identifiant -->
-        <div>
-            <x-input-label for="identifiant" value="Pseudo" />
-            <x-text-input id="identifiant" type="text" name="identifiant" :value="old('identifiant')" required
-                pattern="^[A-Za-z0-9_-]+$" title="Seulement lettres, chiffres, - et _" />
-            <x-input-error :messages="$errors->get('identifiant')" class="mt-2" />
-        </div>
-
-        <!-- Nom -->
-        <div class="mt-4">
-            <x-input-label for="nom" value="Nom" />
-            <x-text-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('nom')" required />
-            <x-input-error :messages="$errors->get('nom')" class="mt-2" />
-        </div>
-
-        <!-- Prénom -->
-        <div class="mt-4">
-            <x-input-label for="prenom" value="Prénom" />
-            <x-text-input id="prenom" class="block mt-1 w-full" type="text" name="prenom" :value="old('prenom')"
-                required />
-            <x-input-error :messages="$errors->get('prenom')" class="mt-2" />
-        </div>
-
-        <!-- Email -->
-        <div class="mt-4">
-            <x-input-label for="email" value="Email" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                required />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Adresse -->
-        <div class="mt-4">
-            <x-input-label for="voie" value="Voie" />
-            <x-text-input id="voie" class="block mt-1 w-full" type="text" name="voie" :value="old('voie')" required />
-        </div>
-
-        <div class="mt-4">
-            <x-input-label for="ville" value="Ville" />
-            <x-text-input id="ville" class="block mt-1 w-full" type="text" name="ville" :value="old('ville')"
-                required />
-        </div>
-
-        <div class="mt-4">
-            <x-input-label for="code_postal" value="Code postal" />
-            <x-text-input id="code_postal" type="text" name="code_postal" :value="old('code_postal')" required
-                pattern="\d{5}" title="5 chiffres exacts" />
-        </div>
-
-        <div class="mt-6">
-            <h3 class="font-bold text-lg">Vos chiens</h3>
-
-            <div id="chiens-container">
-                <div class="chien-block border p-4 mt-2 rounded relative">
-                    <button type="button" onclick="supprimerChien(this)"
-                        class="absolute top-2 right-2 text-red-500 font-bold">
-                        ✕
-                    </button>
-
-                    <x-text-input class="block mt-1 w-full" type="text" name="chiens[0][nom]" placeholder="Nom du chien"
-                        required />
-
-                    <x-text-input class="block mt-2 w-full" type="number" name="chiens[0][age]" placeholder="Age"
-                        required />
-
-                    <x-text-input class="block mt-2 w-full" type="text" name="chiens[0][race]" placeholder="Race"
-                        required />
-                </div>
+    <div class="min-h-screen bg-white">
+        @if ($errors->any())
+            <div class="mb-4 text-red-600">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
+        @endif
 
-            <button type="button" onclick="ajouterChien()" class="mt-3 px-3 py-1 bg-gray-200 rounded">
-                + Ajouter un chien
-            </button>
+        <!-- CARD -->
+        <div class="max-w-6xl mx-auto mt-16 bg-gray-100 border border-black p-10 rounded-xl">
+
+            <form method="POST" action="{{ route('register') }}" class="space-y-12">
+                @csrf
+
+                <!-- ================= LIGNE 1 ================= -->
+                <div class="grid grid-cols-2 gap-12">
+
+                    <!-- MAITRE -->
+                    <div>
+                        <h2 class="text-xl font-bold mb-6">Maître</h2>
+
+                        <div class="space-y-4">
+                            <div>
+                                <x-required-input-red-star for="nom" value="Nom" required />
+                                <x-text-input id="nom" name="nom" type="text" class="mt-1 block w-full"
+                                    :value="old('nom')" required />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star for="prenom" value="Prénom" required />
+                                <x-text-input id="prenom" name="prenom" type="text" class="mt-1 block w-full"
+                                    :value="old('prenom')" required />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star for="email" value="Adresse mail" required />
+                                <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
+                                    :value="old('email')" required />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star for="username" value="Identifiant" required />
+                                <x-text-input id="username" name="username" type="text" class="mt-1 block w-full"
+                                    :value="old('username')" required />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star for="password" value="Mot de passe" required />
+                                <x-text-input id="password" name="password" type="password" class="mt-1 block w-full"
+                                    required />
+                            </div>
+
+                            <div id="password-rules" class="mt-2 text-sm space-y-1">
+                                <p id="rule-length" class="text-gray-500">❌ Au moins 8 caractères</p>
+                                <p id="rule-lower" class="text-gray-500">❌ Une minuscule</p>
+                                <p id="rule-upper" class="text-gray-500">❌ Une majuscule</p>
+                                <p id="rule-number" class="text-gray-500">❌ Un chiffre</p>
+                                <p id="rule-special" class="text-gray-500">❌ Un caractère spécial (@$!%*?&#)</p>
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star for="password_confirmation" value="Confirmer le mot de passe"
+                                    required />
+                                <x-text-input id="password_confirmation" name="password_confirmation" type="password"
+                                    class="mt-1 block w-full" required />
+                            </div>
+
+                            <p id="password-match" class="text-sm mt-2 text-gray-500">
+                                ❌ Les mots de passe ne correspondent pas
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- ADRESSE -->
+                    <div>
+                        <h2 class="text-xl font-bold mb-6">Adresse</h2>
+
+                        <div class="space-y-4">
+                            <div>
+                                <x-required-input-red-star value="Voie" required />
+                                <x-text-input name="voie" class="mt-1 block w-full" :value="old('voie')" required />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star value="Code Postal" required />
+                                <x-text-input name="code_postal" maxlength="5" pattern="\d{5}" class="mt-1 block w-full"
+                                    :value="old('code_postal')" required />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star value="Ville" required />
+                                <x-text-input name="ville" class="mt-1 block w-full" :value="old('ville')" required />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star value="Complément" />
+                                <x-text-input name="complement" class="mt-1 block w-full" :value="old('complement')" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ================= LIGNE 2 ================= -->
+                <div class="grid grid-cols-2 gap-12">
+
+                    <!-- CHIEN -->
+                    <div class="border p-6 rounded-lg bg-gray-50">
+                        <h2 class="text-lg font-semibold mb-4">Toutou</h2>
+
+                        <div class="space-y-4" id="chiens-wrapper">
+                            <div>
+                                <x-required-input-red-star value="Nom du chien" />
+                                <x-text-input name="chiens[0][nom]" class="mt-1 block w-full"
+                                    :value="old('chiens.0.nom')" />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star value="Race" />
+                                <x-text-input name="chiens[0][race]" class="mt-1 block w-full"
+                                    :value="old('chiens.0.race')" />
+                            </div>
+
+                            <div>
+                                <x-required-input-red-star value="Age" />
+                                <x-text-input name="chiens[0][age]" type="number" min="0" max="25"
+                                    class="mt-1 block w-full" :value="old('chiens.0.age')" />
+                            </div>
+                        </div>
+                        <button type="button" id="add-chien-btn" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded">
+                            Ajouter un chien
+                        </button>
+                    </div>
+
+
+                    <!-- OPTIONNEL -->
+                    <div class="p-6 rounded-lg">
+                        <h2 class="text-lg font-semibold mb-4">Optionnel</h2>
+
+                        <div>
+                            <x-input-label value="Comment nous avez-vous connu ?" />
+                            <select name="source" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                <option value="">-- Sélectionner --</option>
+                                <option value="reseaux">Réseaux sociaux</option>
+                                <option value="amis">Amis</option>
+                                <option value="google">Google</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- BOUTON -->
+                <div class="flex justify-center pt-6">
+                    <x-primary-button class="px-12 py-3 text-lg rounded-full">
+                        Inscription
+                    </x-primary-button>
+                </div>
+
+            </form>
         </div>
-
-
-
-        <!-- Password -->
-        <div class="mt-6">
-            <x-input-label for="password" value="Mot de passe" />
-            <x-text-input id="password" type="password" name="password" required
-                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&#]).{8,}"
-                title="Min 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spécial" />
-        </div>
-        <div id="password-rules" class="mt-2 text-sm space-y-1">
-            <p id="rule-length" class="text-gray-500">• 8 caractères minimum</p>
-            <p id="rule-lower" class="text-gray-500">• 1 minuscule</p>
-            <p id="rule-upper" class="text-gray-500">• 1 majuscule</p>
-            <p id="rule-number" class="text-gray-500">• 1 chiffre</p>
-            <p id="rule-special" class="text-gray-500">• 1 caractère spécial (@$!%*?&#)</p>
-        </div>
-
-
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" value="Confirmation mot de passe" />
-            <x-text-input id="password_confirmation" type="password" name="password_confirmation" required />
-        </div>
-
-        <x-input-error :messages="$errors->get('password')" class="mt-2" />
-
-
-        <div class="flex items-center justify-end mt-6">
-            <x-primary-button>
-                S'inscrire
-            </x-primary-button>
-        </div>
-    </form>
+    </div>
 
 
 
     <script>
-        let index = 1;
+        let chienIndex = 1; // déjà un chien dans le formulaire
 
-        function ajouterChien() {
-            const container = document.getElementById('chiens-container');
+        document.getElementById('add-chien-btn').addEventListener('click', function () {
+            const wrapper = document.getElementById('chiens-wrapper');
 
-            const block = document.createElement('div');
-            block.classList.add('chien-block', 'border', 'p-4', 'mt-2', 'rounded', 'relative');
+            const newChien = document.createElement('div');
+            newChien.classList.add('chien', 'mb-4', 'border', 'p-4', 'rounded');
+            newChien.innerHTML = `
+    <div class="space-y-4">
 
-            block.innerHTML = `
+        <div>
+            <label class="block font-medium text-sm text-gray-700">
+                Nom du chien
+            </label>
+            <input type="text" name="chiens[${chienIndex}][nom]"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+        </div>
+
+        <div>
+            <label class="block font-medium text-sm text-gray-700">
+                Race
+            </label>
+            <input type="text" name="chiens[${chienIndex}][race]"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+        </div>
+
+        <div>
+            <label class="block font-medium text-sm text-gray-700">
+                Age
+            </label>
+            <input type="number" name="chiens[${chienIndex}][age]"
+                min="0" max="30"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+        </div>
+
         <button type="button"
-            onclick="supprimerChien(this)"
-            class="absolute top-2 right-2 text-red-500 font-bold">
-            ✕
+            class="remove-chien mt-2 px-2 py-1 bg-red-500 text-white rounded">
+            Supprimer
         </button>
 
-        <input type="text" name="chiens[${index}][nom]" placeholder="Nom du chien" class="block mt-1 w-full border-gray-300 rounded" required>
-        <input type="number" name="chiens[${index}][age]" placeholder="Age" class="block mt-2 w-full border-gray-300 rounded" required>
-        <input type="text" name="chiens[${index}][race]" placeholder="Race" class="block mt-2 w-full border-gray-300 rounded" required>
-    `;
+    </div>
+`;
 
-            container.appendChild(block);
-            index++;
-        }
+            wrapper.appendChild(newChien);
 
-        function supprimerChien(button) {
-            const container = document.getElementById('chiens-container');
-            const blocks = container.getElementsByClassName('chien-block');
-
-            if (blocks.length <= 1) {
-                alert("Vous devez avoir au moins un chien.");
-                return;
-            }
-
-            button.parentElement.remove();
-        }
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-
-            const password = document.getElementById('password');
-            const confirmation = document.getElementById('password_confirmation');
-            const form = document.querySelector('form');
-            const matchMessage = document.getElementById('password-match-message');
-
-            const rules = {
-                length: document.getElementById('rule-length'),
-                lower: document.getElementById('rule-lower'),
-                upper: document.getElementById('rule-upper'),
-                number: document.getElementById('rule-number'),
-                special: document.getElementById('rule-special'),
-            };
-
-            function updateRule(element, isValid) {
-                if (isValid) {
-                    element.style.color = "green";
-                } else {
-                    element.style.color = "#6B7280";
-                }
-            }
-
-            function validatePassword() {
-                const value = password.value;
-
-                const hasLength = value.length >= 8;
-                const hasLower = /[a-z]/.test(value);
-                const hasUpper = /[A-Z]/.test(value);
-                const hasNumber = /[0-9]/.test(value);
-                const hasSpecial = /[@$!%*?&#]/.test(value);
-
-                updateRule(rules.length, hasLength);
-                updateRule(rules.lower, hasLower);
-                updateRule(rules.upper, hasUpper);
-                updateRule(rules.number, hasNumber);
-                updateRule(rules.special, hasSpecial);
-
-                return hasLength && hasLower && hasUpper && hasNumber && hasSpecial;
-            }
-
-            function validateConfirmationLive() {
-
-                if (confirmation.value === "") {
-                    matchMessage.textContent = "";
-                    return false;
-                }
-
-                if (password.value === confirmation.value) {
-                    matchMessage.textContent = "✔ Les mots de passe correspondent";
-                    matchMessage.style.color = "green";
-                    return true;
-                } else {
-                    matchMessage.textContent = "✖ Les mots de passe ne correspondent pas";
-                    matchMessage.style.color = "red";
-                    return false;
-                }
-            }
-
-            password.addEventListener('input', function () {
-                validatePassword();
-                validateConfirmationLive();
+            // bouton supprimer
+            newChien.querySelector('.remove-chien').addEventListener('click', function () {
+                newChien.remove();
             });
 
-            confirmation.addEventListener('input', validateConfirmationLive);
-
-            form.addEventListener('submit', function (e) {
-
-                const isPasswordValid = validatePassword();
-                const isConfirmationValid = validateConfirmationLive();
-
-                if (!isPasswordValid) {
-                    e.preventDefault();
-                    alert("Le mot de passe ne respecte pas les critères.");
-                    return;
-                }
-
-                if (!isConfirmationValid) {
-                    e.preventDefault();
-                    alert("Les mots de passe ne correspondent pas.");
-                }
-            });
-
+            chienIndex++;
         });
     </script>
 
     <script>
         const password = document.getElementById('password');
-        const confirmation = document.getElementById('password_confirmation');
+        const confirmPassword = document.getElementById('password_confirmation');
 
-        const message = document.createElement('p');
-        message.classList.add('mt-2', 'text-sm');
-        confirmation.parentNode.appendChild(message);
+        const rules = {
+            length: document.getElementById('rule-length'),
+            lower: document.getElementById('rule-lower'),
+            upper: document.getElementById('rule-upper'),
+            number: document.getElementById('rule-number'),
+            special: document.getElementById('rule-special'),
+        };
 
-        function verifierMotDePasse() {
-            if (confirmation.value === '') {
-                message.textContent = '';
-                return;
-            }
+        const matchText = document.getElementById('password-match');
 
-            if (password.value === confirmation.value) {
-                message.textContent = "✔ Les mots de passe correspondent";
-                message.style.color = "green";
+        function updateRule(element, condition) {
+            if (condition) {
+                element.textContent = element.textContent.replace('❌', '✅');
+                element.classList.remove('text-gray-500');
+                element.classList.add('text-green-600');
             } else {
-                message.textContent = "✖ Les mots de passe ne correspondent pas";
-                message.style.color = "red";
+                element.textContent = element.textContent.replace('✅', '❌');
+                element.classList.remove('text-green-600');
+                element.classList.add('text-gray-500');
             }
         }
 
-        password.addEventListener('input', verifierMotDePasse);
-        confirmation.addEventListener('input', verifierMotDePasse);
+        function validatePassword() {
+            const value = password.value;
 
-        // Bloquer le submit si ça ne correspond pas
-        document.querySelector('form').addEventListener('submit', function (e) {
-            if (password.value !== confirmation.value) {
-                e.preventDefault();
-                alert("Les mots de passe ne correspondent pas !");
+            updateRule(rules.length, value.length >= 8);
+            updateRule(rules.lower, /[a-z]/.test(value));
+            updateRule(rules.upper, /[A-Z]/.test(value));
+            updateRule(rules.number, /[0-9]/.test(value));
+            updateRule(rules.special, /[@$!%*?&#]/.test(value));
+        }
+
+        function checkMatch() {
+            if (confirmPassword.value === "") {
+                matchText.textContent = "❌ Les mots de passe ne correspondent pas";
+                matchText.classList.remove('text-green-600');
+                matchText.classList.add('text-gray-500');
+                return;
             }
-        });
-    </script>
 
+            if (password.value === confirmPassword.value) {
+                matchText.textContent = "✅ Les mots de passe correspondent";
+                matchText.classList.remove('text-gray-500');
+                matchText.classList.add('text-green-600');
+            } else {
+                matchText.textContent = "❌ Les mots de passe ne correspondent pas";
+                matchText.classList.remove('text-green-600');
+                matchText.classList.add('text-gray-500');
+            }
+        }
+
+        password.addEventListener('input', () => {
+            validatePassword();
+            checkMatch();
+        });
+
+        confirmPassword.addEventListener('input', checkMatch);
+    </script>
 
 </x-guest-layout>
