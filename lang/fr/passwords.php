@@ -13,10 +13,10 @@ return [
     |
     */
 
-'reset' => 'Si vous avez un compte utilisateur, votre mot de passe a été réinitialisé.',
+'reset' => 'Si vous avez un compte utilisateur, un mail vous a été envoyé pour réinitialiser votre mot de passe.',
 'sent' => 'Nous avons envoyé par e-mail votre lien de réinitialisation de mot de passe.',
 'throttled' => 'Veuillez patienter avant de réessayer.',
 'token' => 'Ce jeton de réinitialisation de mot de passe est invalide.',
-'user' => "Si vous avez un compte utilisateur, votre mot de passe a été réinitialisé.",
+'user' => "Si vous avez un compte utilisateur, un mail vous a été envoyé pour réinitialiser votre mot de passe.",
 
 ];
