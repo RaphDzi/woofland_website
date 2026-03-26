@@ -13,6 +13,10 @@
         <!-- CARD -->
         <div class="max-w-6xl mx-auto mt-16 bg-gray-100 border border-black p-10 rounded-xl">
 
+            <h2 class="text-2xl font-bold text-center mb-8">
+                Inscription
+            </h2>
+
             <form method="POST" action="{{ route('register') }}" class="space-y-12">
                 @csrf
 
