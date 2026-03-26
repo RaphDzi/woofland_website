@@ -37,11 +37,11 @@ class RegisteredUserController extends Controller
             'password' => [
                 'required',
                 'confirmed',
-                'min:8',
-                'regex:/[a-z]/',
-                'regex:/[A-Z]/',
-                'regex:/[0-9]/',
-                'regex:/[@$!%*?&#]/',
+                Rules\Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
             ],
             'voie' => ['required', 'string', 'max:255'],
             'ville' => ['required', 'string', 'max:255'],
