@@ -17,10 +17,12 @@ return new class extends Migration {
             $table->string('code_postal');
             $table->string('complement')->nullable();
 
-            $table->foreignId('membre_id')
+            $table->foreignId('user_id')
                 ->unique()
-                ->constrained()
+                ->constrained('users')
                 ->cascadeOnDelete();
+
+            $table->timestamps();
         });
     }
 

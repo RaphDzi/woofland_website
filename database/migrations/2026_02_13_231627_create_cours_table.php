@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->integer('duree');
             $table->string('type_cours');
             $table->string('terrain');
+
+            $table->timestamps();
         });
     }
 

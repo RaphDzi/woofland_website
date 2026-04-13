@@ -12,11 +12,11 @@ class Adresse extends Model
         'ville',
         'code_postal',
         'complement',
-        'id_membre',
+        'user_id',
     ];
 
-    public function membre()
+    public function user()
     {
-        return $this->belongsTo(Membre::class);
+        return $this->belongsTo(User::class);
     }
 }

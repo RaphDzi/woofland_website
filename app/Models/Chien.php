@@ -12,11 +12,11 @@ class Chien extends Model
         'nom',
         'age',
         'race',
-        'id_membre',
+        'user_id',
     ];
 
-    public function membre()
+    public function user()
     {
-        return $this->belongsTo(Membre::class);
+        return $this->belongsTo(User::class);
     }
 }

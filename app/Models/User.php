@@ -11,10 +11,12 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
 
     protected $fillable = [
+        'firstname',
+        'lastname',
         'username',
         'email',
-        'password',
         'phone',
+        'password',
         'role',
     ];
 
@@ -23,13 +25,23 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
-    public function membre()
+    public function user()
     {
-        return $this->hasOne(Membre::class);
+        return $this->hasOne(User::class);
     }
 
     public function formateur()
     {
         return $this->hasOne(Formateur::class);
+    }
+
+    public function adresse()
+    {
+        return $this->hasOne(Adresse::class);
+    }
+
+    public function chiens()
+    {
+        return $this->hasMany(Chien::class);
     }
 }

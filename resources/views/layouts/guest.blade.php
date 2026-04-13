@@ -19,19 +19,7 @@
 
 <body class="font-sans antialiased bg-white">
 
-    <header class="bg-green-800 px-10 py-2 rounded-b-3xl">
-        <div class=" mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <img src="{{ asset('images/logos/logo_woofland.png') }}" class="w-28 h-28" alt="Logo">
-                <h1 class="text-white text-3xl">WoofLand</h1>
-            </div>
 
-            <nav class="text-white space-x-4 underline">
-                <a href="{{ route('register') }}">Inscription</a>
-                <a href="{{ route('login') }}">Connexion</a>
-            </nav>
-        </div>
-    </header>
 
     <div class="text-white text-xl underline">
         Inscription - Connexion

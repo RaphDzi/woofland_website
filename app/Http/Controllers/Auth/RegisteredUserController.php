@@ -31,8 +31,8 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'username' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9_-]+$/', 'unique:users,username'],
-            'nom' => ['required', 'string', 'max:255'],
-            'prenom' => ['required', 'string', 'max:255'],
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => [
                 'required',
@@ -56,6 +56,8 @@ class RegisteredUserController extends Controller
 
         // 1️⃣ Création User
         $user = User::create([
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -63,15 +65,8 @@ class RegisteredUserController extends Controller
             'role' => 'membre',
         ]);
 
-        // 2️⃣ Création Membre
-        $membre = $user->membre()->create([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'date_creation_compte' => now(),
-        ]);
-
         // 3️⃣ Adresse
-        $membre->adresse()->create([
+        $user->adresse()->create([
             'voie' => $request->voie,
             'ville' => $request->ville,
             'code_postal' => $request->code_postal,
@@ -80,7 +75,7 @@ class RegisteredUserController extends Controller
 
         // 4️⃣ Chiens (1 ou plusieurs)
         foreach ($request->chiens as $chien) {
-            $membre->chiens()->create([
+            $user->chiens()->create([
                 'nom' => $chien['nom'],
                 'age' => $chien['age'],
                 'race' => $chien['race'],

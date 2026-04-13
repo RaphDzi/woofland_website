@@ -38,11 +38,6 @@ class AuthenticatedSessionController extends Controller
             '2fa_expires_at' => now()->addMinutes(5),
         ]);
 
-        app(\App\Services\SmsService::class)->send(
-            $user->phone,
-            "Ton code de connexion est : $code"
-        );
-
         return redirect()->route('2fa.form');
     }
 

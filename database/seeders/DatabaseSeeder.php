@@ -5,68 +5,37 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
         // =========================
-        // MEMBRES
+        // USERS
         // =========================
-        DB::table('membres')->insert([
+        User::insert([
             [
-                'nom' => 'Dupont',
-                'prenom' => 'Jean',
-                'mail' => 'jean@test.com',
                 'username' => 'jean123',
-                'mdp' => Hash::make('password'),
-                'date_creation_compte' => now(),
+                'lastname' => 'Dupont',
+                'firstname' => 'Jean',
+                'email' => 'jean@test.com',
+                'phone' => '0600000001',
+                'password' => Hash::make('password'),
+                'role' => 'membre',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'nom' => 'Martin',
-                'prenom' => 'Claire',
-                'mail' => 'claire@test.com',
-                'username' => 'claire123',
-                'mdp' => Hash::make('password'),
-                'date_creation_compte' => now(),
-            ],
-        ]);
-
-        // =========================
-        // ADRESSES (1-1)
-        // =========================
-        DB::table('adresses')->insert([
-            [
-                'voie' => '10 rue des Lilas',
-                'ville' => 'Paris',
-                'code_postal' => '75000',
-                'complement' => null,
-                'id_membre' => 1,
-            ],
-            [
-                'voie' => '5 avenue Victor Hugo',
-                'ville' => 'Lyon',
-                'code_postal' => '69000',
-                'complement' => null,
-                'id_membre' => 2,
-            ],
-        ]);
-
-        // =========================
-        // CHIENS
-        // =========================
-        DB::table('chiens')->insert([
-            [
-                'nom' => 'Rex',
-                'age' => 3,
-                'race' => 'Berger Allemand',
-                'id_membre' => 1,
-            ],
-            [
-                'nom' => 'Bella',
-                'age' => 2,
-                'race' => 'Labrador',
-                'id_membre' => 2,
+                'username' => 'admin',
+                'lastname' => 'Admin',
+                'firstname' => 'Woofland',
+                'email' => 'admin@woofland.com',
+                'phone' => '0600000000',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
 
@@ -77,20 +46,9 @@ class DatabaseSeeder extends Seeder
             [
                 'nom' => 'Durand',
                 'prenom' => 'Paul',
-                'mail' => 'paul@woofland.com',
-                'username' => 'pauladmin',
-                'mdp' => Hash::make('password'),
                 'date_creation' => now(),
-                'is_admin' => true,
-            ],
-            [
-                'nom' => 'Bernard',
-                'prenom' => 'Sophie',
-                'mail' => 'sophie@woofland.com',
-                'username' => 'sophieform',
-                'mdp' => Hash::make('password'),
-                'date_creation' => now(),
-                'is_admin' => false,
+                'is_admin' => 1,
+                'user_id' => 2,
             ],
         ]);
 
@@ -105,31 +63,8 @@ class DatabaseSeeder extends Seeder
                 'duree' => 60,
                 'type_cours' => 'Obéissance',
                 'terrain' => 'Terrain A',
-            ],
-        ]);
-
-        // =========================
-        // INSCRIPTIONS (pivot)
-        // =========================
-        DB::table('inscriptions')->insert([
-            [
-                'id_membre' => 1,
-                'id_cours' => 1,
-                'date_inscription' => now(),
-            ],
-        ]);
-
-        // =========================
-        // ANIMER (pivot)
-        // =========================
-        DB::table('animer')->insert([
-            [
-                'id_formateur' => 1,
-                'id_cours' => 1,
-            ],
-            [
-                'id_formateur' => 2,
-                'id_cours' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
 
@@ -138,11 +73,68 @@ class DatabaseSeeder extends Seeder
         // =========================
         DB::table('publications')->insert([
             [
-                'date_publication' => now(),
-                'titre' => 'Bienvenue chez Woofland',
-                'contenu' => 'Premier article officiel de l\'association.',
-                'visibilite' => 'public',
+                'titre' => 'Bienvenue chez Woofland 🐶',
+                'contenu' => 'Premier article de l’association dédié à l’éducation canine positive.',
+                'visibilite' => 1,
                 'id_formateur' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'titre' => 'Méthodes positives',
+                'contenu' => 'Apprendre avec douceur, patience et récompenses.',
+                'visibilite' => 1,
+                'id_formateur' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        // =========================
+        // ADRESSES
+        // =========================
+        DB::table('adresses')->insert([
+            [
+                'user_id' => 1,
+                'voie' => '10 rue des Chiens',
+                'ville' => 'Auxerre',
+                'code_postal' => '89000',
+                'complement' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        // =========================
+        // CHIENS
+        // =========================
+        DB::table('chiens')->insert([
+            [
+                'user_id' => 1,
+                'nom' => 'Rex',
+                'age' => 3,
+                'race' => 'Labrador',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_id' => 1,
+                'nom' => 'Bella',
+                'age' => 2,
+                'race' => 'Border Collie',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        // =========================
+        // INSCRIPTIONS
+        // =========================
+        DB::table('inscriptions')->insert([
+            [
+                'id_user' => 1,
+                'id_cours' => 1,
+                'date_inscription' => now(),
             ],
         ]);
     }

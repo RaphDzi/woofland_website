@@ -1,16 +1,18 @@
-<x-guest-layout>
-    <div class="min-h-screen bg-white">
+<x-app-layout>
 
+    <div class="min-h-screen bg-gray-50 py-10 px-4">
 
-        <!-- CARD -->
-        <div class="max-w-6xl mx-auto mt-16 bg-gray-100 border border-black p-10 rounded-xl">
+        <!-- CARD PRINCIPALE -->
+        <div class="max-w-6xl mx-auto bg-white border border-gray-200 shadow-md rounded-2xl p-10">
 
-            <h2 class="text-2xl font-bold text-center mb-8">
-                Inscription
+            <!-- TITLE -->
+            <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">
+                🐾 Inscription Woofland
             </h2>
 
+            <!-- ERREURS GLOBALES -->
             @if ($errors->any())
-                <div class="mb-4 text-red-600">
+                <div class="mb-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
                     <ul class="list-disc pl-5">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -22,279 +24,227 @@
             <form method="POST" action="{{ route('register') }}" class="space-y-12">
                 @csrf
 
-                <!-- ================= LIGNE 1 ================= -->
-                <div class="grid grid-cols-2 gap-12">
+                <!-- ================= TOP GRID ================= -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-                    <!-- MAITRE -->
-                    <div>
-                        <h2 class="text-xl font-bold mb-6">Maître</h2>
+                    <!-- 👤 MAÎTRE -->
+                    <div class="bg-gray-50 p-6 rounded-xl border">
+
+                        <h3 class="text-xl font-bold mb-6">👤 Maître</h3>
 
                         <div class="space-y-4">
-                            <div>
-                                <x-required-input-red-star for="nom" value="Nom" required />
-                                <x-text-input id="nom" name="nom" type="text" class="mt-1 block w-full"
-                                    :value="old('nom')" required />
+
+                            <x-required-input-red-star for="firstname" value="Prénom" />
+                            <x-text-input name="firstname" class="w-full" :value="old('firstname')" />
+
+                            <x-required-input-red-star for="lastname" value="Nom" />
+                            <x-text-input name="lastname" class="w-full" :value="old('lastname')" />
+
+                            <x-required-input-red-star for="email" value="Email" />
+                            <x-text-input type="email" name="email" class="w-full" :value="old('email')" />
+
+                            <x-required-input-red-star for="username" value="Identifiant" />
+                            <x-text-input name="username" class="w-full" :value="old('username')" />
+
+                            <x-required-input-red-star for="phone" value="Téléphone" />
+                            <x-text-input name="phone" class="w-full" :value="old('phone')" />
+
+                            <x-required-input-red-star for="password" value="Mot de passe" />
+                            <x-text-input id="password" type="password" name="password" class="w-full" />
+
+                            <x-required-input-red-star for="password_confirmation" value="Confirmation" />
+                            <x-text-input id="password_confirmation" type="password" name="password_confirmation"
+                                class="w-full" />
+
+                            <!-- RULES -->
+                            <div id="password-rules" class="text-sm space-y-1 mt-3">
+                                <p id="rule-length">❌ 8 caractères</p>
+                                <p id="rule-lower">❌ minuscule</p>
+                                <p id="rule-upper">❌ majuscule</p>
+                                <p id="rule-number">❌ chiffre</p>
+                                <p id="rule-special">❌ caractère spécial</p>
                             </div>
 
-                            <div>
-                                <x-required-input-red-star for="prenom" value="Prénom" required />
-                                <x-text-input id="prenom" name="prenom" type="text" class="mt-1 block w-full"
-                                    :value="old('prenom')" required />
-                            </div>
-
-                            <div>
-                                <x-required-input-red-star for="email" value="Adresse mail" required />
-                                <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
-                                    :value="old('email')" required />
-                            </div>
-
-                            <div>
-                                <x-required-input-red-star for="username" value="Identifiant" required />
-                                <x-text-input id="username" name="username" type="text" class="mt-1 block w-full"
-                                    :value="old('username')" required />
-                            </div>
-
-                            <div>
-                                <x-required-input-red-star for="phone" value="Numéro de téléphone" required />
-                                <x-text-input id="phone" name="phone" type="tel" class="mt-1 block w-full"
-                                    :value="old('phone')" required />
-                            </div>
-
-                            <div>
-                                <x-required-input-red-star for="password" value="Mot de passe" required />
-                                <x-text-input id="password" name="password" type="password" class="mt-1 block w-full"
-                                    required />
-                            </div>
-
-                            <div id="password-rules" class="mt-2 text-sm space-y-1">
-                                <p id="rule-length" class="text-gray-500">❌ Au moins 8 caractères</p>
-                                <p id="rule-lower" class="text-gray-500">❌ Une minuscule</p>
-                                <p id="rule-upper" class="text-gray-500">❌ Une majuscule</p>
-                                <p id="rule-number" class="text-gray-500">❌ Un chiffre</p>
-                                <p id="rule-special" class="text-gray-500">❌ Un caractère spécial (@$!%*?&#)</p>
-                            </div>
-
-                            <div>
-                                <x-required-input-red-star for="password_confirmation" value="Confirmer le mot de passe"
-                                    required />
-                                <x-text-input id="password_confirmation" name="password_confirmation" type="password"
-                                    class="mt-1 block w-full" required />
-                            </div>
-
-                            <p id="password-match" class="text-sm mt-2 text-gray-500">
+                            <p id="password-match" class="text-sm text-gray-500 mt-2">
                                 ❌ Les mots de passe ne correspondent pas
                             </p>
+
                         </div>
                     </div>
 
-                    <!-- ADRESSE -->
-                    <div>
-                        <h2 class="text-xl font-bold mb-6">Adresse</h2>
+                    <!-- 🏠 ADRESSE -->
+                    <div class="bg-gray-50 p-6 rounded-xl border">
+
+                        <h3 class="text-xl font-bold mb-6">🏠 Adresse</h3>
 
                         <div class="space-y-4">
-                            <div>
-                                <x-required-input-red-star value="Voie" required />
-                                <x-text-input name="voie" class="mt-1 block w-full" :value="old('voie')" required />
-                            </div>
 
-                            <div>
-                                <x-required-input-red-star value="Code Postal" required />
-                                <x-text-input name="code_postal" maxlength="5" pattern="\d{5}" class="mt-1 block w-full"
-                                    :value="old('code_postal')" required />
-                            </div>
+                            <x-required-input-red-star value="Voie" />
+                            <x-text-input name="voie" class="w-full" :value="old('voie')" />
 
-                            <div>
-                                <x-required-input-red-star value="Ville" required />
-                                <x-text-input name="ville" class="mt-1 block w-full" :value="old('ville')" required />
-                            </div>
+                            <x-required-input-red-star value="Code postal" />
+                            <x-text-input name="code_postal" maxlength="5" class="w-full" :value="old('code_postal')" />
 
-                            <div>
-                                <x-required-input-red-star value="Complément" />
-                                <x-text-input name="complement" class="mt-1 block w-full" :value="old('complement')" />
-                            </div>
+                            <x-required-input-red-star value="Ville" />
+                            <x-text-input name="ville" class="w-full" :value="old('ville')" />
+
+                            <x-input-label value="Complément" />
+                            <x-text-input name="complement" class="w-full" :value="old('complement')" />
+
                         </div>
                     </div>
 
                 </div>
 
-                <!-- ================= LIGNE 2 ================= -->
-                <div class="grid grid-cols-2 gap-12">
+                <!-- ================= CHIENS ================= -->
+                <div class="bg-white border rounded-xl p-6">
 
-                    <!-- CHIEN -->
-                    <div class="border p-6 rounded-lg bg-gray-50">
-                        <h2 class="text-lg font-semibold mb-4">Toutou</h2>
+                    <h3 class="text-xl font-bold mb-6">🐶 Chiens</h3>
 
-                        <div class="space-y-4" id="chiens-wrapper">
-                            <div>
-                                <x-required-input-red-star value="Nom du chien" />
-                                <x-text-input name="chiens[0][nom]" class="mt-1 block w-full"
-                                    :value="old('chiens.0.nom')" />
-                            </div>
+                    <div id="chiens-wrapper" class="space-y-4">
 
-                            <div>
-                                <x-required-input-red-star value="Race" />
-                                <x-text-input name="chiens[0][race]" class="mt-1 block w-full"
-                                    :value="old('chiens.0.race')" />
-                            </div>
-
-                            <div>
-                                <x-required-input-red-star value="Age" />
-                                <x-text-input name="chiens[0][age]" type="number" min="0" max="25"
-                                    class="mt-1 block w-full" :value="old('chiens.0.age')" />
-                            </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <x-text-input name="chiens[0][nom]" placeholder="Nom" :value="old('chiens[0][nom]')" />
+                            <x-text-input name="chiens[0][race]" placeholder="Race" :value="old('chiens[0][race]')" />
+                            <x-text-input type="number" name="chiens[0][age]" placeholder="Âge" :value="old('chiens[0][age]')" />
                         </div>
-                        <button type="button" id="add-chien-btn" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded">
-                            Ajouter un chien
-                        </button>
+
                     </div>
 
-
-                    <!-- OPTIONNEL -->
-                    <div class="p-6 rounded-lg">
-                        <h2 class="text-lg font-semibold mb-4">Optionnel</h2>
-
-                        <div>
-                            <x-input-label value="Comment nous avez-vous connu ?" />
-                            <select name="source" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                <option value="">-- Sélectionner --</option>
-                                <option value="reseaux">Réseaux sociaux</option>
-                                <option value="amis">Amis</option>
-                                <option value="google">Google</option>
-                            </select>
-                        </div>
-                    </div>
+                    <button type="button" id="add-chien-btn"
+                        class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        + Ajouter un chien
+                    </button>
 
                 </div>
 
-                <!-- BOUTON -->
-                <div class="flex justify-center pt-6">
-                    <x-primary-button class="px-12 py-3 text-lg rounded-full">
-                        Inscription
+                <!-- ================= SUBMIT ================= -->
+                <div class="text-center">
+                    <x-primary-button class="px-10 py-3 text-lg rounded-full">
+                        S'inscrire
                     </x-primary-button>
                 </div>
 
             </form>
         </div>
     </div>
+<script>
+    let chienIndex = 1;
 
+    // =========================
+    // AJOUT CHIENS
+    // =========================
+    document.getElementById('add-chien-btn').addEventListener('click', function () {
 
+        const wrapper = document.getElementById('chiens-wrapper');
 
-    <script>
-        let chienIndex = 1; // déjà un chien dans le formulaire
+        const div = document.createElement('div');
 
-        document.getElementById('add-chien-btn').addEventListener('click', function () {
-            const wrapper = document.getElementById('chiens-wrapper');
+        div.classList.add('grid', 'grid-cols-1', 'md:grid-cols-3', 'gap-4');
 
-            const newChien = document.createElement('div');
-            newChien.classList.add('chien', 'mb-4', 'border', 'p-4', 'rounded');
-            newChien.innerHTML = `
-    <div class="space-y-4">
+        div.innerHTML = `
+            <input type="text" name="chiens[${chienIndex}][nom]" placeholder="Nom"
+                class="border rounded p-2 w-full">
 
-        <div>
-            <label class="block font-medium text-sm text-gray-700">
-                Nom du chien
-            </label>
-            <input type="text" name="chiens[${chienIndex}][nom]"
-                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
-        </div>
+            <input type="text" name="chiens[${chienIndex}][race]" placeholder="Race"
+                class="border rounded p-2 w-full">
 
-        <div>
-            <label class="block font-medium text-sm text-gray-700">
-                Race
-            </label>
-            <input type="text" name="chiens[${chienIndex}][race]"
-                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
-        </div>
+            <input type="number" name="chiens[${chienIndex}][age]" placeholder="Âge"
+                class="border rounded p-2 w-full">
 
-        <div>
-            <label class="block font-medium text-sm text-gray-700">
-                Age
-            </label>
-            <input type="number" name="chiens[${chienIndex}][age]"
-                min="0" max="30"
-                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
-        </div>
+            <button type="button"
+                class="remove bg-red-500 text-white rounded px-2 py-1">
+                Supprimer
+            </button>
+        `;
 
-        <button type="button"
-            class="remove-chien mt-2 px-2 py-1 bg-red-500 text-white rounded">
-            Supprimer
-        </button>
+        wrapper.appendChild(div);
 
-    </div>
-`;
-
-            wrapper.appendChild(newChien);
-
-            // bouton supprimer
-            newChien.querySelector('.remove-chien').addEventListener('click', function () {
-                newChien.remove();
-            });
-
-            chienIndex++;
-        });
-    </script>
-
-    <script>
-        const password = document.getElementById('password');
-        const confirmPassword = document.getElementById('password_confirmation');
-
-        const rules = {
-            length: document.getElementById('rule-length'),
-            lower: document.getElementById('rule-lower'),
-            upper: document.getElementById('rule-upper'),
-            number: document.getElementById('rule-number'),
-            special: document.getElementById('rule-special'),
-        };
-
-        const matchText = document.getElementById('password-match');
-
-        function updateRule(element, condition) {
-            if (condition) {
-                element.textContent = element.textContent.replace('❌', '✅');
-                element.classList.remove('text-gray-500');
-                element.classList.add('text-green-600');
-            } else {
-                element.textContent = element.textContent.replace('✅', '❌');
-                element.classList.remove('text-green-600');
-                element.classList.add('text-gray-500');
-            }
-        }
-
-        function validatePassword() {
-            const value = password.value;
-
-            updateRule(rules.length, value.length >= 8);
-            updateRule(rules.lower, /[a-z]/.test(value));
-            updateRule(rules.upper, /[A-Z]/.test(value));
-            updateRule(rules.number, /[0-9]/.test(value));
-            updateRule(rules.special, /[@$!%*?&#]/.test(value));
-        }
-
-        function checkMatch() {
-            if (confirmPassword.value === "") {
-                matchText.textContent = "❌ Les mots de passe ne correspondent pas";
-                matchText.classList.remove('text-green-600');
-                matchText.classList.add('text-gray-500');
-                return;
-            }
-
-            if (password.value === confirmPassword.value) {
-                matchText.textContent = "✅ Les mots de passe correspondent";
-                matchText.classList.remove('text-gray-500');
-                matchText.classList.add('text-green-600');
-            } else {
-                matchText.textContent = "❌ Les mots de passe ne correspondent pas";
-                matchText.classList.remove('text-green-600');
-                matchText.classList.add('text-gray-500');
-            }
-        }
-
-        password.addEventListener('input', () => {
-            validatePassword();
-            checkMatch();
+        div.querySelector('.remove').addEventListener('click', () => {
+            div.remove();
         });
 
-        confirmPassword.addEventListener('input', checkMatch);
-    </script>
+        chienIndex++;
+    });
 
-</x-guest-layout>
+    // =========================
+    // PASSWORD CHECK MATCH
+    // =========================
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('password_confirmation');
+    const matchText = document.getElementById('password-match');
+
+    function checkMatch() {
+        if (!password || !confirmPassword) return;
+
+        if (confirmPassword.value === "") {
+            matchText.textContent = "❌ Les mots de passe ne correspondent pas";
+            matchText.classList.remove('text-green-600');
+            matchText.classList.add('text-gray-500');
+            return;
+        }
+
+        if (password.value === confirmPassword.value) {
+            matchText.textContent = "✅ Correspondance OK";
+            matchText.classList.add('text-green-600');
+            matchText.classList.remove('text-gray-500');
+        } else {
+            matchText.textContent = "❌ Ne correspond pas";
+            matchText.classList.remove('text-green-600');
+            matchText.classList.add('text-gray-500');
+        }
+    }
+
+    // =========================
+    // PASSWORD RULES
+    // =========================
+    const rules = {
+        length: document.getElementById('rule-length'),
+        lower: document.getElementById('rule-lower'),
+        upper: document.getElementById('rule-upper'),
+        number: document.getElementById('rule-number'),
+        special: document.getElementById('rule-special'),
+    };
+
+    function updateRule(element, valid) {
+        if (!element) return;
+
+        const isChecked = element.textContent.includes('✅');
+
+        if (valid && !isChecked) {
+            element.textContent = element.textContent.replace('❌', '✅');
+            element.classList.remove('text-gray-500');
+            element.classList.add('text-green-600');
+        }
+
+        if (!valid && isChecked) {
+            element.textContent = element.textContent.replace('✅', '❌');
+            element.classList.remove('text-green-600');
+            element.classList.add('text-gray-500');
+        }
+    }
+
+    function validatePassword() {
+        if (!password) return;
+
+        const value = password.value;
+
+        updateRule(rules.length, value.length >= 8);
+        updateRule(rules.lower, /[a-z]/.test(value));
+        updateRule(rules.upper, /[A-Z]/.test(value));
+        updateRule(rules.number, /[0-9]/.test(value));
+        updateRule(rules.special, /[@$!%*?&#]/.test(value));
+    }
+
+    // =========================
+    // EVENTS
+    // =========================
+    password.addEventListener('input', () => {
+        validatePassword();
+        checkMatch();
+    });
+
+    confirmPassword.addEventListener('input', checkMatch);
+</script>
+
+</x-app-layout>

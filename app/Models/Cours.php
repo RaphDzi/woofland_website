@@ -17,13 +17,13 @@ class Cours extends Model
         'terrain',
     ];
 
-    public function membres()
+    public function users()
     {
         return $this->belongsToMany(
-            Membre::class,
+            User::class,
             'inscriptions',
             'id_cours',
-            'id_membre'
+            'user_id'
         )->withPivot('date_inscription');
     }
 

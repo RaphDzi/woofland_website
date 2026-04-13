@@ -12,9 +12,10 @@ return new class extends Migration {
     {
         Schema::create('publications', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('date_publication')->nullable();
+            $table->timestamps();
             $table->string('titre');
             $table->text('contenu');
+            $table->string('image')->nullable();
             $table->string('visibilite');
 
             $table->foreignId('id_formateur')

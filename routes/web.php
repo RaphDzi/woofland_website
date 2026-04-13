@@ -4,11 +4,33 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\TwoFactorController;
+use App\Models\Publication;
+use App\Http\Controllers\PublicationController;
+
+
 
 
 Route::get('/', function () {
-    return view('welcome');
+    $publications = Publication::latest()->get();
+
+    return view('welcome', compact('publications'));
 });
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/publications/{publication}', [PublicationController::class, 'show'])
+    ->name('publications.show');
+
+Route::get('/actualites', function () {
+
+    $publications = Publication::with('formateur')
+        ->orderBy('created_at', 'desc')
+        ->paginate(9);
+
+    return view('publications.index', compact('publications'));
+})->name('publications.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

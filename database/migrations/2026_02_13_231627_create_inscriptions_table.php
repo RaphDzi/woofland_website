@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('inscriptions', function (Blueprint $table) {
-            $table->foreignId('id_membre')
-                ->constrained('membres')
+            $table->foreignId('id_user')
+                ->constrained('users')
                 ->onDelete('cascade');
 
             $table->foreignId('id_cours')
@@ -21,7 +21,7 @@ return new class extends Migration {
 
             $table->timestamp('date_inscription')->nullable();
 
-            $table->unique(['id_membre', 'id_cours']);
+            $table->unique(['id_user', 'id_cours']);
         });
 
     }

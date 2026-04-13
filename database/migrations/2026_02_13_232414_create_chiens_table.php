@@ -16,9 +16,11 @@ return new class extends Migration {
             $table->integer('age');
             $table->string('race');
 
-            $table->foreignId('membre_id')
-                ->constrained()
+            $table->foreignId('user_id')
+                ->constrained('users')
                 ->cascadeOnDelete();
+
+            $table->timestamps();
         });
     }
 
