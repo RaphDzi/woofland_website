@@ -6,8 +6,7 @@
         <div class="w-full max-w-lg bg-white border border-gray-200 rounded-2xl shadow-md p-10">
 
             <!-- STATUS -->
-            <x-auth-session-status class="mb-4 text-center text-green-600 font-medium"
-                :status="session('status')" />
+            <x-auth-session-status class="mb-4 text-center text-green-600 font-medium" :status="session('status')" />
 
             <!-- TITLE -->
             <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">
@@ -22,14 +21,9 @@
                 <div>
                     <x-input-label for="email" :value="__('Adresse email')" />
 
-                    <x-text-input
-                        id="email"
+                    <x-text-input id="email"
                         class="block mt-1 w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                        type="email"
-                        name="email"
-                        :value="old('email')"
-                        required
-                        autofocus />
+                        type="email" name="email" :value="old('email')" required autofocus />
 
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
@@ -38,35 +32,20 @@
                 <div>
                     <x-input-label for="password" :value="__('Mot de passe')" />
 
-                    <x-text-input
-                        id="password"
+                    <x-text-input id="password"
                         class="block mt-1 w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-                        type="password"
-                        name="password"
-                        required />
+                        type="password" name="password" required />
 
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
                 <!-- OPTIONS -->
                 <div class="flex items-center justify-between text-sm">
-
-                    <label class="flex items-center gap-2 text-gray-600">
-                        <input
-                            id="remember_me"
-                            type="checkbox"
-                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                            name="remember">
-                        Se souvenir de moi
-                    </label>
-
                     @if (Route::has('password.request'))
-                        <a class="text-indigo-600 hover:text-indigo-800 font-medium"
-                            href="{{ route('password.request') }}">
+                        <a class="text-indigo-600 hover:text-indigo-800 font-medium" href="{{ route('password.request') }}">
                             Mot de passe oublié ?
                         </a>
                     @endif
-
                 </div>
 
                 <!-- BUTTON -->
@@ -79,8 +58,7 @@
                 <!-- REGISTER -->
                 <div class="text-center text-sm text-gray-600">
                     Pas encore de compte ?
-                    <a href="{{ route('register') }}"
-                        class="text-indigo-600 hover:text-indigo-800 font-medium">
+                    <a href="{{ route('register') }}" class="text-indigo-600 hover:text-indigo-800 font-medium">
                         S’inscrire
                     </a>
                 </div>

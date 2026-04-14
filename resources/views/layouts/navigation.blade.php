@@ -1,8 +1,8 @@
 <nav x-data="{ open: false }">
 
     <!-- HEADER -->
-    <header class="bg-green-700 rounded-b-3xl mx-6 mt-4">
-        <div class="flex justify-between items-center px-8 py-4 text-white">
+    <header class="bg-green-700 rounded-2xl mx-6">
+        <div class="flex justify-between items-center px-8  py-4 text-white">
 
             <!-- LOGO -->
             <div class="flex items-center gap-3">
@@ -20,9 +20,8 @@
                 <span>-</span>
 
                 @auth
-                    <span class="font-semibold">{{ Auth::user()->name }}</span>
+                    <a href="{{ route('profile.edit') }}" class="hover:underline">{{ Auth::user()->username }}</a>
                     <span>-</span>
-
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();"

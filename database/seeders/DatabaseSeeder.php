@@ -37,6 +37,17 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'username' => 'raphdzi',
+                'lastname' => 'Doizi',
+                'firstname' => 'Raphael',
+                'email' => 'doizi.raphael@gmail.com',
+                'phone' => '0600000002',
+                'password' => Hash::make('Jeunesheguey54!'),
+                'role' => 'admin',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         // =========================

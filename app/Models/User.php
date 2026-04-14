@@ -18,11 +18,21 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone',
         'password',
         'role',
+        'two_factor_code',
+        'two_factor_expires_at',
+        'remember_2fa_token',
+        'remember_2fa_expires_at',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'two_factor_expires_at' => 'datetime',
+        'remember_2fa_expires_at' => 'datetime',
     ];
 
     public function user()

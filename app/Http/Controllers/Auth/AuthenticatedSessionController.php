@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -22,23 +24,41 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
+        
         $request->authenticate();
 
         $user = Auth::user();
+        if (
+            $user->remember_2fa_token &&
+            $user->remember_2fa_expires_at &&
+            $user->remember_2fa_expires_at->isFuture()
+        ) {
+            $request->session()->regenerate();
+            return redirect()->intended('/');
+        }
+
+        $code = rand(100000, 999999);
+
+        $user->two_factor_code = $code;
+        $user->two_factor_expires_at = Carbon::now()->addMinutes(10);
+        $user->save();
+
+        \Mail::raw("Votre code WoofLand : $code", function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject('Code de connexion WoofLand');
+        });
+
+        session(['2fa:user:id' => $user->id]);
 
         Auth::logout();
 
-        $code = random_int(100000, 999999);
+        $request->session()->regenerateToken();
 
-        session([
-            '2fa_user_id' => $user->id,
-            '2fa_code' => $code,
-            '2fa_expires_at' => now()->addMinutes(5),
-        ]);
+        return redirect('/2fa');
 
-        return redirect()->route('2fa.form');
+
     }
 
     /**
