@@ -49,4 +49,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Chien::class);
     }
+
+    public function adhesion()
+    {
+        return $this->hasOne(Adhesion::class);
+    }
 }
