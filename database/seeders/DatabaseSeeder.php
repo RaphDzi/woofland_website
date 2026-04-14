@@ -51,19 +51,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // =========================
-        // FORMATEURS
-        // =========================
-        DB::table('formateurs')->insert([
-            [
-                'nom' => 'Durand',
-                'prenom' => 'Paul',
-                'date_creation' => now(),
-                'is_admin' => 1,
-                'user_id' => 2,
-            ],
-        ]);
-
-        // =========================
         // COURS
         // =========================
         DB::table('cours')->insert([
@@ -87,7 +74,7 @@ class DatabaseSeeder extends Seeder
                 'titre' => 'Bienvenue chez Woofland 🐶',
                 'contenu' => 'Premier article de l’association dédié à l’éducation canine positive.',
                 'visibilite' => 1,
-                'id_formateur' => 1,
+                'user_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -95,7 +82,7 @@ class DatabaseSeeder extends Seeder
                 'titre' => 'Méthodes positives',
                 'contenu' => 'Apprendre avec douceur, patience et récompenses.',
                 'visibilite' => 1,
-                'id_formateur' => 1,
+                'user_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

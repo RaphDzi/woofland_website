@@ -40,11 +40,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(User::class);
     }
 
-    public function formateur()
-    {
-        return $this->hasOne(Formateur::class);
-    }
-
     public function adresse()
     {
         return $this->hasOne(Adresse::class);

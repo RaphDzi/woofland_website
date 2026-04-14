@@ -115,6 +115,8 @@
                 class="mt-1 block w-full rounded-lg border-gray-300 focus:border-green-600 focus:ring-green-600"
                 :value="old('phone', $user->phone)"
                 autocomplete="tel"
+                minlength="10"
+                maxlength="15"
             />
 
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />

@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Chien extends Model
 {
-    public $timestamps = false;
+    protected $table = 'chiens';
+    public $timestamps = true;
 
     protected $fillable = [
+        'user_id',
         'nom',
         'age',
         'race',
-        'user_id',
     ];
 
     public function user()

@@ -11,15 +11,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('animer', function (Blueprint $table) {
-            $table->foreignId('id_formateur')
-                ->constrained('formateurs')
-                ->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
 
             $table->foreignId('id_cours')
                 ->constrained('cours')
-                ->onDelete('cascade');
-
-            $table->unique(['id_formateur', 'id_cours']);
+                ->cascadeOnDelete();
         });
     }
 

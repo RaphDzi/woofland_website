@@ -30,10 +30,10 @@ class Cours extends Model
     public function formateurs()
     {
         return $this->belongsToMany(
-            Formateur::class,
+            User::class,
             'animer',
             'id_cours',
-            'id_formateur'
-        );
+            'id_user'
+        )->where('role', 'formateur');
     }
 }

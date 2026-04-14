@@ -33,7 +33,7 @@ Route::get('/publications/{publication}', [PublicationController::class, 'show']
 
 Route::get('/actualites', function () {
 
-    $publications = Publication::with('formateur')
+    $publications = Publication::with('user')
         ->orderBy('created_at', 'desc')
         ->paginate(9);
 
@@ -47,9 +47,18 @@ Route::get('/dashboard', function () {
 
 // profile routes
 Route::middleware('auth')->group(function () {
+
+    //PROFILE
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //PROFILE ADRESS
+    Route::patch('/profile/address', [ProfileController::class, 'updateAddress'])->name('profile.address.update');
+    //PROFILE DOG
+    Route::post('/profile/dog', [ProfileController::class, 'storeDog'])->name('profile.dog.store');
+    Route::patch('/profile/dog/{id}', [ProfileController::class, 'updateDog'])->name('profile.dog.update');
+    Route::delete('/profile/dog/{id}', [ProfileController::class, 'deleteDog'])->name('profile.dog.delete');
 });
 
 // auth routes

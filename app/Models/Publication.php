@@ -16,13 +16,13 @@ class Publication extends Model
         'contenu',
         'image',
         'visibilite',
-        'id_formateur',
+        'user_id',
 
     ];
 
-    public function formateur()
+    public function user()
     {
-        return $this->belongsTo(Formateur::class, 'id_formateur');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function getImageUrlAttribute()

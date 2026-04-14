@@ -12,9 +12,19 @@
             </p>
         </div>
 
+        <!-- DOG INFO -->
+        <div class="bg-white shadow-md rounded-2xl p-8 mb-8">
+            @include('profile.partials.update-dog-form')
+        </div>
+
         <!-- PROFILE INFO -->
         <div class="bg-white shadow-md rounded-2xl p-8 mb-8">
             @include('profile.partials.update-profile-information-form')
+        </div>
+
+        <!-- ADDRESS -->
+        <div class="bg-white shadow-md rounded-2xl p-8 mb-8">
+            @include('profile.partials.update-address-form')
         </div>
 
         <!-- PASSWORD -->

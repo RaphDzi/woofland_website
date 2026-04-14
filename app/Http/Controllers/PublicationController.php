@@ -28,7 +28,7 @@ class PublicationController extends Controller
             'contenu' => $request->contenu,
             'date_publication' => now(),
             'visibilite' => 1,
-            'id_formateur' => auth()->id(),
+            'user_id' => auth()->id(),
             'image' => $imagePath,
         ]);
 

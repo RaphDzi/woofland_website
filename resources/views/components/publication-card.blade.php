@@ -27,8 +27,8 @@
             </span>
 
             <span class="font-medium text-gray-700">
-                {{ $publication->formateur->prenom ?? '' }}
-                {{ $publication->formateur->nom ?? 'Admin' }}
+                {{ $publication->user->prenom ?? '' }}
+                {{ $publication->user->nom ?? 'Admin' }}
             </span>
 
         </div>

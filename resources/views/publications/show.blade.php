@@ -15,7 +15,7 @@
 
             <p class="text-gray-500 text-sm mb-6">
                 {{ \Carbon\Carbon::parse($publication->created_at)->format('d/m/Y') }}
-                • {{ $publication->formateur->prenom ?? '' }} {{ $publication->formateur->nom ?? '' }}
+                • {{ $publication->user->prenom ?? '' }} {{ $publication->user->nom ?? '' }}
             </p>
 
             <div class="text-gray-700 leading-relaxed">

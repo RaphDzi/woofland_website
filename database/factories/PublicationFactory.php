@@ -12,7 +12,7 @@ class PublicationFactory extends Factory
         'titre' => fake()->sentence(6),
         'contenu' => fake()->paragraphs(4, true),
         'visibilite' => 1,
-        'id_formateur' => 1,
+        'user_id' => 1,
         'image' => null,
     ];
 }
