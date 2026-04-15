@@ -27,6 +27,11 @@
             @include('profile.partials.update-address-form')
         </div>
 
+        <!-- ADHESION -->
+        <div class="bg-white shadow-md rounded-2xl p-8 mb-8">
+            @include('profile.partials.adhesion')
+        </div>
+
         <!-- PASSWORD -->
         <div class="bg-white shadow-md rounded-2xl p-8 mb-8">
             @include('profile.partials.update-password-form')
