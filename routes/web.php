@@ -7,6 +7,7 @@ use App\Http\Controllers\TwoFactorController;
 use App\Models\Publication;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\CoursController;
+use App\Http\Controllers\MessageController;
 
 
 
@@ -71,6 +72,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/cours/{id}/desinscription', [CoursController::class, 'desinscrire'])->name('cours.desinscrire');
 });
 
+//message routes
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+
+    Route::get('/messages/{id}', [MessageController::class, 'show'])->name('messages.show');
+
+    Route::post('/messages/send', [MessageController::class, 'store'])->name('messages.store');
+
+});
 
 // auth routes
 Route::get('/register', [RegisteredUserController::class, 'create'])

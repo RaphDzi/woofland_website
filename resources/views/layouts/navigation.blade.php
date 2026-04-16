@@ -23,6 +23,9 @@
                     <a href="{{ route('cours.index') }}" class="hover:underline">Cours</a>
                     <span>-</span>
 
+                    <a href="{{ route('messages.index') }}" class="hover:underline">Conversations</a>
+                    <span>-</span>
+
                     <a href="{{ route('profile.edit') }}" class="hover:underline">{{ Auth::user()->username }}</a>
                     <span>-</span>
 
@@ -62,6 +65,8 @@
 
         @auth
             <a href="{{ route('cours.index') }}" class="block">Cours</a>
+
+            <a href="{{ route('messages.index') }}" class="block">Conversations</a>
 
             <div>{{ Auth::user()->username }}</div>
 
