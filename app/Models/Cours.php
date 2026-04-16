@@ -36,4 +36,15 @@ class Cours extends Model
             'id_user'
         )->where('role', 'formateur');
     }
+
+    public function animateur()
+    {
+        return $this->belongsToMany(User::class, 'animer', 'id_cours', 'user_id');
+    }
+
+    public function inscrits()
+    {
+        return $this->belongsToMany(User::class, 'inscriptions', 'id_cours', 'id_user')
+            ->withPivot('date_inscription');
+    }
 }

@@ -135,5 +135,9 @@ class DatabaseSeeder extends Seeder
                 'date_inscription' => now(),
             ],
         ]);
+
+        $this->call([
+            CoursSeeder::class,
+        ]);
     }
 }

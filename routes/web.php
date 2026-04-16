@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\TwoFactorController;
 use App\Models\Publication;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\CoursController;
 
 
 
@@ -61,6 +62,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile/dog/{id}', [ProfileController::class, 'deleteDog'])->name('profile.dog.delete');
 });
 
+// cours routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cours', [CoursController::class, 'index'])->name('cours.index');
+
+    Route::post('/cours/{id}/inscription', [CoursController::class, 'inscrire'])->name('cours.inscrire');
+
+    Route::delete('/cours/{id}/desinscription', [CoursController::class, 'desinscrire'])->name('cours.desinscrire');
+});
+
+
 // auth routes
 Route::get('/register', [RegisteredUserController::class, 'create'])
     ->middleware('guest')
@@ -68,5 +79,6 @@ Route::get('/register', [RegisteredUserController::class, 'create'])
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest');
+
 
 require __DIR__ . '/auth.php';

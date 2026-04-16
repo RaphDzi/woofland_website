@@ -20,8 +20,12 @@
                 <span>-</span>
 
                 @auth
+                    <a href="{{ route('cours.index') }}" class="hover:underline">Cours</a>
+                    <span>-</span>
+
                     <a href="{{ route('profile.edit') }}" class="hover:underline">{{ Auth::user()->username }}</a>
                     <span>-</span>
+
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();"
@@ -57,7 +61,9 @@
         <hr class="border-white/30">
 
         @auth
-            <div>{{ Auth::user()->name }}</div>
+            <a href="{{ route('cours.index') }}" class="block">Cours</a>
+
+            <div>{{ Auth::user()->username }}</div>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
