@@ -23,7 +23,7 @@ class MessageController extends Controller
             ->orderBy('created_at')
             ->get();
 
-        return view('messages.show', compact('messages'));
+        return view('messages.show', compact('messages', 'id'));
     }
 
     public function store(Request $request)
@@ -41,5 +41,28 @@ class MessageController extends Controller
             ]);
 
         return back();
+    }
+
+    public function start($userId)
+    {
+        $authId = auth()->id();
+
+        // vérifier si conversation existe déjà
+        $conversation = Conversation::where('participants', 'all', [$authId, $userId])
+            ->first();
+
+        // si elle existe déjà → retour direct
+        if ($conversation) {
+            return redirect()->route('messages.show', $conversation->_id);
+        }
+
+        // sinon créer conversation
+        $conversation = Conversation::create([
+            'participants' => [$authId, $userId],
+            'last_message' => null,
+            'updated_at' => now()
+        ]);
+
+        return redirect()->route('messages.show', $conversation->_id);
     }
 }

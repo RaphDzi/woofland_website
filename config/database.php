@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -30,15 +30,6 @@ return [
     */
 
     'connections' => [
-
-        'mongodb' => [
-            'driver' => 'mongodb',
-            'host' => env('MONGO_HOST', '127.0.0.1'),
-            'port' => env('MONGO_PORT', 27017),
-            'database' => env('MONGO_DATABASE'),
-            'username' => env('MONGO_USERNAME'),
-            'password' => env('MONGO_PASSWORD'),
-        ],
 
         'sqlite' => [
             'driver' => 'sqlite',
@@ -120,6 +111,12 @@ return [
             'prefix_indexes' => true,
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
+
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'dsn' => env('MONGODB_URI'),
+            'database' => env('MONGODB_DATABASE'),
         ],
 
     ],

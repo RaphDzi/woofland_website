@@ -81,6 +81,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/messages/send', [MessageController::class, 'store'])->name('messages.store');
 
+    Route::post('/conversations/start/{userId}', [MessageController::class, 'start'])
+    ->middleware('auth')
+    ->name('conversations.start');
 });
 
 // auth routes
