@@ -20,10 +20,46 @@
                 <span>-</span>
 
                 @auth
+
+                    {{-- MENU ADMIN --}}
+                    @if(Auth::user()->role === 'admin')
+                        <div x-data="{ openAdmin: false }" class="relative inline-block">
+
+                            <button @click="openAdmin = !openAdmin" class="hover:underline flex items-center gap-1">
+                                Administration <span>▾</span>
+                            </button>
+
+                            <div x-show="openAdmin" @click.away="openAdmin = false"
+                                class="absolute top-6 left-0 bg-white text-black rounded-lg shadow-lg w-52 py-2 z-50">
+                                <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 hover:bg-gray-100">
+                                    Dashboard
+                                </a>
+
+                                <a href="{{ route('admin.cours.index') }}" class="block px-4 py-2 hover:bg-gray-100">
+                                    Gestion des cours
+                                </a>
+
+                                <a href="{{ route('admin.publications.index') }}" class="block px-4 py-2 hover:bg-gray-100">
+                                    Gestion des publications
+                                </a>
+
+                                <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 hover:bg-gray-100">
+                                    Gestion des membres
+                                </a>
+                            </div>
+                        </div>
+
+                        <span>-</span>
+                    @endif
+
+
+                    {{-- LIENS USER NORMAL --}}
                     <a href="{{ route('cours.index') }}" class="hover:underline">Cours</a>
                     <span>-</span>
 
-                    <a href="{{ route('profile.edit') }}" class="hover:underline">{{ Auth::user()->username }}</a>
+                    <a href="{{ route('profile.edit') }}" class="hover:underline">
+                        {{ Auth::user()->username }}
+                    </a>
                     <span>-</span>
 
                     <a href="{{ route('messages.index') }}" class="hover:underline">💬</a>
@@ -36,6 +72,7 @@
                             Déconnexion
                         </a>
                     </form>
+
                 @else
                     <a href="{{ route('login') }}" class="hover:underline">Connexion</a>
                     <span>-</span>

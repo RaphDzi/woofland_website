@@ -9,6 +9,11 @@ use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\MessageController;
 
+use App\Http\Controllers\Admin\AdminCoursController as AdminCoursController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminPublicationController as AdminPublicationController;
+use App\Http\Controllers\Admin\AdminUserController as AdminUserController;
+
 
 
 // default page
@@ -86,6 +91,23 @@ Route::middleware(['auth'])->group(function () {
     ->name('conversations.start');
 });
 
+// admin routes
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
+
+        Route::resource('/cours', AdminCoursController::class);
+
+        Route::resource('/publications', AdminPublicationController::class);
+
+        Route::resource('/users', AdminUserController::class);
+
+    });
+
 // auth routes
 Route::get('/register', [RegisteredUserController::class, 'create'])
     ->middleware('guest')
@@ -93,6 +115,5 @@ Route::get('/register', [RegisteredUserController::class, 'create'])
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest');
-
 
 require __DIR__ . '/auth.php';
