@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AdminUserController extends Controller
 {
@@ -12,7 +13,8 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -58,8 +60,35 @@ class AdminUserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        if (auth()->id() === $user->id) {
+            return back()->with('error', 'Tu ne peux pas supprimer ton propre compte.');
+        }
+
+        $user->delete();
+
+        return back()->with('success', 'Utilisateur supprimé');
+    }
+
+
+
+
+    public function updateRole(Request $request, User $user)
+    {
+        $request->validate([
+            'role' => 'required|in:membre,formateur,admin',
+        ]);
+
+        // 🔒 sécurité : empêcher de modifier soi-même
+        if (auth()->id() === $user->id) {
+            return back()->with('error', 'Tu ne peux pas modifier ton propre rôle.');
+        }
+
+        $user->update([
+            'role' => $request->role
+        ]);
+
+        return back()->with('success', 'Rôle mis à jour');
     }
 }

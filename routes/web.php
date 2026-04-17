@@ -87,8 +87,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/messages/send', [MessageController::class, 'store'])->name('messages.store');
 
     Route::post('/conversations/start/{userId}', [MessageController::class, 'start'])
-    ->middleware('auth')
-    ->name('conversations.start');
+        ->middleware('auth')
+        ->name('conversations.start');
 });
 
 // admin routes
@@ -105,6 +105,8 @@ Route::middleware(['auth', 'admin'])
         Route::resource('/publications', AdminPublicationController::class);
 
         Route::resource('/users', AdminUserController::class);
+        Route::patch('/users/{user}/role', [AdminUserController::class, 'updateRole'])
+            ->name('users.updateRole');
 
     });
 
