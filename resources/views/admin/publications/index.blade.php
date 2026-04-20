@@ -34,21 +34,36 @@
             class="border rounded-lg px-4 py-2 w-full">
 
         <!-- SORT -->
-        <select name="sort" class="border rounded-lg px-3 py-2">
+        <select name="sort" class="border rounded-lg px-4 py-2">
             <option value="desc" @selected(request('sort')==='desc' )>Plus récentes</option>
             <option value="asc" @selected(request('sort')==='asc' )>Plus anciennes</option>
+        </select>
+
+        <!-- VISIBILITÉ -->
+        <select name="visibilite" class="border rounded-lg px-3 py-2">
+            <option value="">Toutes</option>
+            <option value="members_only" @selected(request('visibilite')==='members_only' )>
+                Membres uniquement
+            </option>
+            <option value="members_and_visitors" @selected(request('visibilite')==='members_and_visitors' )>
+                Publique
+            </option>
         </select>
 
         <button class="bg-gray-800 text-white px-4 py-2 rounded-lg">
             Filtrer
         </button>
+        <a href="{{ route('admin.publications.index') }}"
+            class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+            réinitialiser
+        </a>
 
     </form>
 
     <!-- TABLE -->
     <div class="bg-white rounded-2xl shadow overflow-hidden">
 
-        <table class="w-full text-left">
+        <table class="w-full text-left text-sm">
 
             <!-- HEADER -->
             <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
@@ -93,45 +108,44 @@
                     <td class="p-4">
                         @if($pub->image)
                         <img src="{{ asset($pub->image) }}"
-                            class="w-16 h-16 object-cover rounded">
+                            class="w-14 h-14 object-cover rounded-lg border">
                         @else
-                        <span class="text-gray-400">Pas d'image</span>
+                        <div class="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-400">
+                            N/A
+                        </div>
                         @endif
                     </td>
 
-                    <!-- VISIBILITÉ -->
+                    <!-- VISIILITÉ -->
                     <td class="p-4">
-                        <span class="px-3 py-1 rounded-full text-sm font-semibold @if($pub->visibilite === 'members_only') bg-blue-100 text-blue-700 @else bg-green-100 text-green-700 @endif
-">
-                            @if($pub->visibilite === 'members_only')
-                            Membres uniquement
-                            @else
-                            Public
-                            @endif
+                        @php
+                        $isPrivate = $pub->visibilite === 'members_only';
+                        @endphp
+
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold
+                            {{ $isPrivate ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700' }}">
+                            {{ $isPrivate ? 'Membres' : 'Publique' }}
                         </span>
                     </td>
 
                     <!-- ACTIONS -->
-                    <td class="p-4 text-center space-x-2">
-
+                    <td class="p-4 text-center flex justify-center gap-2">
                         <a href="{{ route('admin.publications.edit', $pub) }}"
-                            class="bg-blue-500 text-white px-3 py-1 rounded text-sm">
-                            Modifier
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition">
+                            ✏️
                         </a>
 
                         <form method="POST"
-                            action="{{ route('admin.publications.destroy', $pub) }}"
-                            class="inline">
+                            action="{{ route('admin.publications.destroy', $pub) }}">
                             @csrf
                             @method('DELETE')
 
                             <button
                                 onclick="return confirm('⚠️ Supprimer cette publication ?')"
-                                class="bg-red-600 text-white px-3 py-1 rounded text-sm">
-                                Supprimer
+                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition">
+                                🗑
                             </button>
                         </form>
-
                     </td>
 
                 </tr>

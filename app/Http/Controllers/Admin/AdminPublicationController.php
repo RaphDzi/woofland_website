@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Publication;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class AdminPublicationController extends Controller
 {
@@ -17,16 +18,29 @@ class AdminPublicationController extends Controller
     {
         $query = Publication::with('user');
 
-        // 🔍 FILTRE PAR TITRE
+        // 🔍 SEARCH
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('titre', 'like', "%{$search}%")
+                    ->orWhere('contenu', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($u) use ($search) {
+                        $u->where('username', 'like', "%{$search}%");
+                    });
+            });
         }
 
-        // 📅 TRI PAR DATE
-        $sort = $request->get('sort', 'desc'); // desc par défaut
+        // 🎯 VISIBILITÉ FILTER
+        if ($request->filled('visibilite')) {
+            $query->where('visibilite', $request->visibilite);
+        }
+
+        // 📅 SORT
+        $sort = $request->get('sort', 'desc');
         $query->orderBy('created_at', $sort);
 
-        $publications = $query->paginate(10);
+        $publications = $query->paginate(10)->appends($request->query());
 
         return view('admin.publications.index', compact('publications'));
     }
@@ -100,8 +114,18 @@ class AdminPublicationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Publication $publication)
     {
-        //
+        // 🧹 SUPPRESSION IMAGE SI EXISTE
+        if ($publication->image && File::exists(public_path($publication->image))) {
+            File::delete(public_path($publication->image));
+        }
+
+        // 🗑️ SUPPRESSION EN BDD
+        $publication->delete();
+
+        return redirect()
+            ->route('admin.publications.index')
+            ->with('success', 'Publication supprimée');
     }
 }
