@@ -17,8 +17,11 @@
             <a href="{{ route('admin.dashboard') }}" class="block hover:underline">Dashboard</a>
             <a href="{{ route('admin.cours.index') }}" class="block hover:underline">Cours</a>
             <a href="{{ route('admin.publications.index') }}" class="block hover:underline">Publications</a>
-            <a href="{{ route('admin.users.index') }}" class="block hover:underline">Utilisateurs</a>
+            <a href="{{ route('admin.users.index') }}" class="block hover:underline">Membres</a>
+            <a href="{{ route('admin.abonnements.index') }}" class="block hover:underline">Abonnements</a>
         </nav>
+
+    <a href="{{ route('dashboard') }}" class="block hover:underline">Back</a>
     </aside>
 
     <!-- CONTENU -->

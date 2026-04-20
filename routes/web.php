@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminCoursController as AdminCoursController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminPublicationController as AdminPublicationController;
 use App\Http\Controllers\Admin\AdminUserController as AdminUserController;
+use App\Http\Controllers\Admin\AdminAbonnementController as AdminAbonnementController;
 
 
 
@@ -107,6 +108,8 @@ Route::middleware(['auth', 'admin'])
         Route::resource('/users', AdminUserController::class);
         Route::patch('/users/{user}/role', [AdminUserController::class, 'updateRole'])
             ->name('users.updateRole');
+
+        Route::resource('/abonnements', AdminAbonnementController::class);
 
     });
 
