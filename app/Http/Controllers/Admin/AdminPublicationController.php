@@ -98,17 +98,49 @@ class AdminPublicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Publication $publication)
     {
-        //
+        return view('admin.publications.edit', compact('publication'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Publication $publication)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'visibilite' => 'required|in:members_only,members_and_visitors',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:15360',
+        ]);
+
+        // 📸 GESTION IMAGE
+        if ($request->hasFile('image')) {
+
+            // 🧹 supprimer ancienne image
+            if ($publication->image && File::exists(public_path($publication->image))) {
+                File::delete(public_path($publication->image));
+            }
+
+            // 📸 upload nouvelle image
+            $file = $request->file('image');
+            $filename = Str::random(20) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/publications'), $filename);
+
+            $publication->image = 'uploads/publications/' . $filename;
+        }
+
+        // 📝 UPDATE DATA
+        $publication->update([
+            'titre' => $request->title,
+            'contenu' => $request->description,
+            'visibilite' => $request->visibilite,
+        ]);
+
+        return redirect()
+            ->route('admin.publications.index')
+            ->with('success', 'Publication mise à jour');
     }
 
     /**
