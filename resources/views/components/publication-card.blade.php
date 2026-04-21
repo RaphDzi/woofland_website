@@ -2,7 +2,7 @@
    class="block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition">
 
     @if($publication->image)
-        <img src="{{ asset('storage/' . $publication->image) }}"
+        <img src="{{ asset($publication->image) }}"
              class="w-full h-48 object-cover">
     @else
         <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-400">

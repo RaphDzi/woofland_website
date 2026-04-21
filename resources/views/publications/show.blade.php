@@ -3,7 +3,7 @@
     <div class="max-w-4xl mx-auto mt-10 bg-white rounded-2xl shadow-md overflow-hidden">
 
         @if($publication->image)
-            <img src="{{ asset('storage/' . $publication->image) }}"
+            <img src="{{ asset($publication->image) }}"
                  class="w-full h-80 object-cover">
         @endif
 
