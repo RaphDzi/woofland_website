@@ -35,7 +35,7 @@
                         <div class="space-y-4">
 
                             <x-required-input-red-star for="firstname" value="Prénom" />
-                            <x-text-input name="firstname" class="w-full" :value="old('firstname')" />
+                            <x-text-input name="firstname" class="w-full" :value="old('firstname')"/>
 
                             <x-required-input-red-star for="lastname" value="Nom" />
                             <x-text-input name="lastname" class="w-full" :value="old('lastname')" />

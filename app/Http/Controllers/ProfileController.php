@@ -69,10 +69,14 @@ class ProfileController extends Controller
 
     public function storeDog(Request $request)
     {
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+        ]);
+
         $user = auth()->user();
 
         $user->chiens()->create([
-            'nom' => 'Mon chien',
+            'nom' => $validated['nom'],
             'age' => 0,
             'race' => 'Ex: Labrador',
         ]);

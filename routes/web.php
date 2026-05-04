@@ -121,8 +121,5 @@ Route::get('/register', [RegisteredUserController::class, 'create'])
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest');
 
-    Route::get('/phpinfo', function () {
-    phpinfo();
-});
 
 require __DIR__ . '/auth.php';
