@@ -21,6 +21,13 @@
 
         </div>
 
+        <!-- MESSAGE SI VIDE -->
+        @if($publications->isEmpty())
+            <div class="text-center text-gray-500 mt-10">
+                Aucune actualité disponible
+            </div>
+        @endif
+
         <!-- PAGINATION -->
         <div class="mt-10">
             {{ $publications->links() }}

@@ -1,0 +1,83 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    environment:
+      APP_NAME: ${WOOFLAND_APP_NAME:-Woofland}
+      APP_ENV: ${WOOFLAND_APP_ENV:-production}
+      APP_KEY: ${WOOFLAND_APP_KEY:-base64:jUKSWUS6RnmZALIxPiekYpFjJo4RR9cffc8vDfYN/LU=}
+      APP_DEBUG: ${WOOFLAND_APP_DEBUG:-false}
+      APP_URL: ${WOOFLAND_APP_URL:-http://localhost:8080}
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: ${WOOFLAND_DB_DATABASE:-woofland}
+      DB_USERNAME: ${WOOFLAND_DB_USERNAME:-woofland}
+      DB_PASSWORD: ${WOOFLAND_DB_PASSWORD:-woofland}
+      MONGODB_URI: mongodb://mongodb:27017
+      MONGODB_DATABASE: ${WOOFLAND_MONGODB_DATABASE:-woofland}
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      MAIL_MAILER: log
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+    volumes:
+      - public_uploads:/var/www/html/public/uploads
+    networks:
+      - woofland
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+    volumes:
+      - public_uploads:/var/www/html/public/uploads:ro
+    networks:
+      - woofland
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${WOOFLAND_DB_DATABASE:-woofland}
+      MYSQL_USER: ${WOOFLAND_DB_USERNAME:-woofland}
+      MYSQL_PASSWORD: ${WOOFLAND_DB_PASSWORD:-woofland}
+      MYSQL_ROOT_PASSWORD: ${WOOFLAND_DB_ROOT_PASSWORD:-root}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$${MYSQL_ROOT_PASSWORD} || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    networks:
+      - woofland
+
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - woofland
+
+networks:
+  woofland:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  mongodb_data:
+  public_uploads:
