@@ -13,6 +13,7 @@ class AdminAndPublicationTest extends TestCase
 
     public function test_non_admin_cannot_access_admin_dashboard(): void
     {
+        /** @var User $user */
         $user = User::factory()->create(['role' => 'membre']);
 
         $response = $this->actingAs($user)->get('/admin/dashboard');
@@ -22,6 +23,7 @@ class AdminAndPublicationTest extends TestCase
 
     public function test_admin_can_access_admin_dashboard(): void
     {
+        /** @var User $admin */
         $admin = User::factory()->create(['role' => 'admin']);
 
         $response = $this->actingAs($admin)->get('/admin/dashboard');
@@ -31,7 +33,10 @@ class AdminAndPublicationTest extends TestCase
 
     public function test_admin_can_update_another_users_role(): void
     {
+        /** @var User $admin */
         $admin = User::factory()->create(['role' => 'admin']);
+
+        /** @var User $member */
         $member = User::factory()->create(['role' => 'membre']);
 
         $response = $this->actingAs($admin)->patch("/admin/users/{$member->id}/role", [
@@ -49,6 +54,7 @@ class AdminAndPublicationTest extends TestCase
 
     public function test_admin_cannot_update_their_own_role(): void
     {
+        /** @var User $admin */
         $admin = User::factory()->create(['role' => 'admin']);
 
         $response = $this->actingAs($admin)->patch("/admin/users/{$admin->id}/role", [
@@ -66,6 +72,7 @@ class AdminAndPublicationTest extends TestCase
 
     public function test_admin_can_create_publication(): void
     {
+        /** @var User $admin */
         $admin = User::factory()->create(['role' => 'admin']);
 
         $response = $this->actingAs($admin)->post('/admin/publications', [
@@ -87,6 +94,7 @@ class AdminAndPublicationTest extends TestCase
 
     public function test_publication_detail_page_is_visible(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $publication = Publication::create([
             'titre' => 'Actualite club',

@@ -12,6 +12,7 @@ class CsrfProtectionSecurityTest extends TestCase
 
     public function test_sensitive_forms_render_csrf_tokens(): void
     {
+        /** @var User $admin */
         $admin = User::factory()->create(['role' => 'admin']);
 
         $this->get('/login')

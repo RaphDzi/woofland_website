@@ -16,7 +16,7 @@ class dogTest extends TestCase
      */
     public function test_user_can_create_dog()
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/profile/dog', [

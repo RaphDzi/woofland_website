@@ -13,6 +13,7 @@ class InputValidationSecurityTest extends TestCase
 
     public function test_profile_update_rejects_invalid_email(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->patch('/profile', [
@@ -33,6 +34,7 @@ class InputValidationSecurityTest extends TestCase
 
     public function test_admin_publication_rejects_non_image_upload(): void
     {
+        /** @var User $admin */
         $admin = User::factory()->create(['role' => 'admin']);
 
         $response = $this->actingAs($admin)->post('/admin/publications', [

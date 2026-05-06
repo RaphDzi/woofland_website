@@ -13,6 +13,7 @@ class CoursRegistrationTest extends TestCase
 
     public function test_user_can_register_for_course_more_than_six_hours_away(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $course = $this->createCourse(now()->addHours(8));
 
@@ -29,6 +30,7 @@ class CoursRegistrationTest extends TestCase
 
     public function test_user_cannot_register_less_than_six_hours_before_course(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $course = $this->createCourse(now()->addHours(5));
 
@@ -45,6 +47,7 @@ class CoursRegistrationTest extends TestCase
 
     public function test_user_can_unregister_more_than_six_hours_before_course(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $course = $this->createCourse(now()->addHours(8));
 

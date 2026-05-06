@@ -20,6 +20,7 @@ class AccessControlSecurityTest extends TestCase
 
     public function test_non_admin_cannot_access_admin_area(): void
     {
+        /** @var User $user */
         $user = User::factory()->create(['role' => 'membre']);
 
         $this->actingAs($user)->get('/admin/dashboard')->assertForbidden();
@@ -29,6 +30,7 @@ class AccessControlSecurityTest extends TestCase
 
     public function test_admin_cannot_change_their_own_role(): void
     {
+        /** @var User $admin */
         $admin = User::factory()->create(['role' => 'admin']);
 
         $response = $this->actingAs($admin)->patch("/admin/users/{$admin->id}/role", [
@@ -45,7 +47,10 @@ class AccessControlSecurityTest extends TestCase
 
     public function test_user_cannot_modify_another_users_dog(): void
     {
+        /** @var User $owner */
         $owner = User::factory()->create();
+
+        /** @var User $otherUser */
         $otherUser = User::factory()->create();
         $dog = $owner->chiens()->create([
             'nom' => 'Rex',

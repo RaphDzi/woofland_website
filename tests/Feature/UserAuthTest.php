@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
@@ -18,7 +19,8 @@ class UserAuthTest extends TestCase
     {
         Mail::fake();
 
-        $user = \App\Models\User::factory()->create([
+        /** @var User $user */
+        $user = User::factory()->create([
             'password' => bcrypt('password')
         ]);
 

@@ -12,6 +12,7 @@ class ProfileManagementTest extends TestCase
 
     public function test_user_can_create_or_update_address(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->patch('/profile/address', [
@@ -35,6 +36,7 @@ class ProfileManagementTest extends TestCase
 
     public function test_user_can_update_their_dog(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $dog = $user->chiens()->create([
             'nom' => 'Rex',
@@ -61,7 +63,10 @@ class ProfileManagementTest extends TestCase
 
     public function test_user_cannot_update_another_users_dog(): void
     {
+        /** @var User $owner */
         $owner = User::factory()->create();
+
+        /** @var User $otherUser */
         $otherUser = User::factory()->create();
         $dog = $owner->chiens()->create([
             'nom' => 'Rex',
@@ -87,6 +92,7 @@ class ProfileManagementTest extends TestCase
 
     public function test_user_can_delete_their_dog(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $dog = $user->chiens()->create([
             'nom' => 'Rex',
