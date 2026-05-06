@@ -2,6 +2,7 @@ FROM node:22-alpine AS assets
 
 WORKDIR /app
 
+# Compilation des assets front-end dans une etape separee.
 COPY package.json package-lock.json vite.config.js postcss.config.js tailwind.config.js ./
 COPY resources ./resources
 
@@ -11,6 +12,7 @@ FROM php:8.4-fpm-alpine AS app
 
 WORKDIR /var/www/html
 
+# Installation des extensions PHP requises par Laravel, MySQL et MongoDB.
 RUN apk add --no-cache \
         git \
         icu-dev \
@@ -32,6 +34,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY composer.json composer.lock ./
 
+# Installation des dependances PHP sans les paquets de developpement.
 RUN composer install \
     --no-dev \
     --no-interaction \
@@ -43,6 +46,7 @@ COPY . .
 COPY --from=assets /app/public/build ./public/build
 COPY docker/php/entrypoint.sh /usr/local/bin/woofland-entrypoint
 
+# Preparation des repertoires accessibles en ecriture par le processus applicatif.
 RUN composer dump-autoload --optimize \
     && chmod +x /usr/local/bin/woofland-entrypoint \
     && chown -R www-data:www-data storage bootstrap/cache \
