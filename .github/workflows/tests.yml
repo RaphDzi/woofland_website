@@ -13,8 +13,8 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: woofland
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.DB_DATABASE }}
         ports:
           - 3306:3306
 
@@ -40,11 +40,13 @@ jobs:
           echo "DB_PORT=3306" >> .env
           echo "DB_DATABASE=woofland" >> .env
           echo "DB_USERNAME=root" >> .env
-          echo "DB_PASSWORD=root" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+
+          echo "CACHE_STORE=file" >> .env
+          echo "SESSION_DRIVER=file" >> .env
 
           php artisan key:generate
           php artisan config:clear
-          php artisan cache:clear
 
       - name: Run migrations
         run: php artisan migrate --force
