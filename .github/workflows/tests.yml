@@ -54,7 +54,12 @@ jobs:
       - name: Run tests with coverage
         run: php artisan test --coverage-clover=coverage.xml
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v5
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=RaphDzi_woofland_website
+            -Dsonar.organization=raphdzi
+            -Dsonar.sources=.
