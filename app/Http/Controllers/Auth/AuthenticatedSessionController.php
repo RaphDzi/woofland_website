@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 use Carbon\Carbon;
 
 class AuthenticatedSessionController extends Controller
@@ -29,6 +30,7 @@ class AuthenticatedSessionController extends Controller
         
         $request->authenticate();
 
+        /** @var User $user */
         $user = Auth::user();
         if (
             $user->remember_2fa_token &&
@@ -39,13 +41,13 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended('/');
         }
 
-        $code = rand(100000, 999999);
+        $code = random_int(100000, 999999);
 
         $user->two_factor_code = $code;
         $user->two_factor_expires_at = Carbon::now()->addMinutes(10);
         $user->save();
 
-        \Mail::raw("Votre code WoofLand : $code", function ($message) use ($user) {
+        Mail::raw("Votre code WoofLand : $code", function ($message) use ($user) {
             $message->to($user->email)
                 ->subject('Code de connexion WoofLand');
         });
