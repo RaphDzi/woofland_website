@@ -18,7 +18,7 @@ class AdminPublicationController extends Controller
     {
         $query = Publication::with('user');
 
-        // 🔍 SEARCH
+        // search
         if ($request->filled('search')) {
             $search = $request->search;
 
@@ -31,13 +31,13 @@ class AdminPublicationController extends Controller
             });
         }
 
-        // 🎯 VISIBILITÉ FILTER
+        // filter by visibility
         if ($request->filled('visibilite')) {
             $query->where('visibilite', $request->visibilite);
         }
 
-        // 📅 SORT
-        $sort = $request->get('sort', 'desc');
+        // sort
+        $sort = $request->input('sort', 'desc');
         $query->orderBy('created_at', $sort);
 
         $publications = $query->paginate(10)->appends($request->query());
@@ -67,7 +67,7 @@ class AdminPublicationController extends Controller
 
         $imagePath = null;
 
-        // 📸 UPLOAD IMAGE
+        // image upload
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = Str::random(20) . '.' . $file->getClientOriginalExtension();

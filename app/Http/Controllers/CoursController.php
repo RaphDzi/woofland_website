@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cours;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class CoursController extends Controller
 {
@@ -44,8 +45,7 @@ class CoursController extends Controller
         if (now()->diffInHours($dateCours, false) < 6) {
             return back()->with('error', 'Moins de 6h avant le cours');
         }
-
-        auth()->user()->coursInscrits()->syncWithoutDetaching($id);
+        Auth::auth()->user()->coursInscrits()->syncWithoutDetaching($id);
 
         return back()->with('success', 'Inscription OK');
     }
@@ -59,8 +59,7 @@ class CoursController extends Controller
         if (now()->diffInHours($dateCours, false) < 6) {
             return back()->with('error', 'Moins de 6h avant le cours');
         }
-
-        auth()->user()->coursInscrits()->detach($id);
+        Auth::auth()->user()->coursInscrits()->detach($id);
 
         return back()->with('success', 'Désinscription OK');
     }
