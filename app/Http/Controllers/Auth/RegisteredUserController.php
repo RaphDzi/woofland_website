@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
 
 
 
-        // 1️⃣ Création User
+        // create User
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
@@ -65,7 +65,7 @@ class RegisteredUserController extends Controller
             'role' => 'membre',
         ]);
 
-        // 3️⃣ Adresse
+        // create Adresse
         $user->adresse()->create([
             'voie' => $request->voie,
             'ville' => $request->ville,
@@ -73,7 +73,7 @@ class RegisteredUserController extends Controller
             'complement' => $request->complement,
         ]);
 
-        // 4️⃣ Chiens (1 ou plusieurs)
+        // create Chiens (1 or more)
         foreach ($request->chiens as $chien) {
             $user->chiens()->create([
                 'nom' => $chien['nom'],

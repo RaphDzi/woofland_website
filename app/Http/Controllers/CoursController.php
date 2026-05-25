@@ -45,7 +45,7 @@ class CoursController extends Controller
         if (now()->diffInHours($dateCours, false) < 6) {
             return back()->with('error', 'Moins de 6h avant le cours');
         }
-        Auth::auth()->user()->coursInscrits()->syncWithoutDetaching($id);
+        Auth::user()->coursInscrits()->syncWithoutDetaching($id);
 
         return back()->with('success', 'Inscription OK');
     }
@@ -59,7 +59,7 @@ class CoursController extends Controller
         if (now()->diffInHours($dateCours, false) < 6) {
             return back()->with('error', 'Moins de 6h avant le cours');
         }
-        Auth::auth()->user()->coursInscrits()->detach($id);
+        Auth::user()->coursInscrits()->detach($id);
 
         return back()->with('success', 'Désinscription OK');
     }

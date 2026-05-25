@@ -7,8 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
-use App\Models\Chien;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -18,11 +17,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request)
     {
+        /** @var User $user */
         $user = $request->user();
 
         return view('profile.edit', [
             'user' => $user,
-            'chiens' => $request->user()->chiens()->latest()->get(),
+            'chiens' => $user->chiens()->latest()->get(),
         ]);
     }
 
@@ -43,7 +43,6 @@ class ProfileController extends Controller
     }
 
     //ADDRESS METHODS
-
     public function updateAddress(Request $request)
     {
         $request->validate([
@@ -53,6 +52,7 @@ class ProfileController extends Controller
             'complement' => 'nullable|string|max:255',
         ]);
 
+        /** @var User $user */
         $user = auth()->user();
 
         $user->adresse()->updateOrCreate([], [
@@ -66,13 +66,13 @@ class ProfileController extends Controller
     }
 
     //DOGS METHODS
-
     public function storeDog(Request $request)
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
         ]);
 
+        /** @var User $user */
         $user = auth()->user();
 
         $user->chiens()->create([
@@ -87,7 +87,9 @@ class ProfileController extends Controller
 
     public function updateDog(Request $request, $id)
     {
-        $chien = auth()->user()->chiens()->findOrFail($id);
+        /** @var User $user */
+        $user = auth()->user();
+        $chien = $user->chiens()->findOrFail($id);
 
         $chien->update($request->only('nom', 'age', 'race'));
 
@@ -96,7 +98,9 @@ class ProfileController extends Controller
 
     public function deleteDog($id)
     {
-        $chien = auth()->user()->chiens()->findOrFail($id);
+        /** @var User $user */
+        $user = auth()->user();
+        $chien = $user->chiens()->findOrFail($id);
 
         $chien->delete();
 
