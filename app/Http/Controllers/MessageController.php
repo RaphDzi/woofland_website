@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Conversation;
 use App\Models\Message;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class MessageController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        $conversations = Conversation::where('participants', 'all', [auth()->id()])
+        $conversations = Conversation::where('participants', 'all', [$this->authenticatedUserId()])
             ->orderBy('updated_at', 'desc')
             ->get();
 
         return view('messages.index', compact('conversations'));
     }
 
-    public function show($id)
+    public function show(string $id): View
     {
         $messages = Message::where('conversation_id', $id)
             ->orderBy('created_at')
@@ -26,43 +29,56 @@ class MessageController extends Controller
         return view('messages.show', compact('messages', 'id'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        Message::create([
-            'conversation_id' => $request->conversation_id,
-            'sender_id' => auth()->id(),
-            'content' => $request->input('content')
+        $validated = $request->validate([
+            'conversation_id' => ['required', 'string'],
+            'content' => ['required', 'string', 'max:2000'],
         ]);
 
-        Conversation::where('_id', $request->conversation_id)
+        Message::create([
+            'conversation_id' => $validated['conversation_id'],
+            'sender_id' => $this->authenticatedUserId(),
+            'content' => $validated['content'],
+        ]);
+
+        Conversation::where('_id', $validated['conversation_id'])
             ->update([
-                'last_message' => $request->input('content'),
-                'updated_at' => now()
+                'last_message' => $validated['content'],
+                'updated_at' => now(),
             ]);
 
         return back();
     }
 
-    public function start($userId)
+    public function start(int $userId): RedirectResponse
     {
-        $authId = auth()->id();
+        $authId = $this->authenticatedUserId();
 
-        // vérifier si conversation existe déjà
         $conversation = Conversation::where('participants', 'all', [$authId, $userId])
             ->first();
 
-        // si elle existe déjà → retour direct
         if ($conversation) {
-            return redirect()->route('messages.show', $conversation->_id);
+            return redirect()->route('messages.show', (string) $conversation->getKey());
         }
 
-        // sinon créer conversation
         $conversation = Conversation::create([
             'participants' => [$authId, $userId],
             'last_message' => null,
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
 
-        return redirect()->route('messages.show', $conversation->_id);
+        return redirect()->route('messages.show', (string) $conversation->getKey());
+    }
+
+    private function authenticatedUserId(): int|string
+    {
+        $id = Auth::id();
+
+        if ($id === null) {
+            abort(403);
+        }
+
+        return $id;
     }
 }

@@ -1,6 +1,7 @@
 services:
   app:
     # Service applicatif Laravel execute par PHP-FPM.
+    image: ${WOOFLAND_APP_IMAGE:-woofland-app:local}
     build:
       context: .
       dockerfile: docker/php/Dockerfile
@@ -36,6 +37,7 @@ services:
 
   nginx:
     # Serveur web frontal charge des fichiers publics et du routage vers PHP-FPM.
+    image: ${WOOFLAND_NGINX_IMAGE:-woofland-nginx:local}
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile

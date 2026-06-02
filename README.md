@@ -208,23 +208,29 @@ Pour que la messagerie fonctionne en local, MongoDB doit etre demarre et les var
 
 ## Integration continue
 
-Le projet contient un workflow GitHub Actions pour :
+Le projet contient un workflow GitHub Actions decoupe en quatre jobs :
 
-- installer PHP et les dependances Composer ;
-- preparer l'environnement Laravel ;
-- lancer les migrations ;
-- executer les tests avec couverture ;
-- lancer l'analyse SonarQube.
+- `Build` : installe les dependances PHP et front-end, puis compile les assets Vite ;
+- `Test` : prepare l'environnement Laravel, lance MySQL, execute les migrations et les tests avec couverture ;
+- `Quality` : lance l'analyse SonarQube a partir du rapport de couverture ;
+- `Deploy` : construit et pousse les images Docker PHP-FPM et Nginx dans GitHub Container Registry.
+
+Le deploiement Docker respecte la configuration Docker Compose du projet :
+
+- image applicative PHP-FPM : variable `WOOFLAND_APP_IMAGE` ;
+- image serveur Nginx : variable `WOOFLAND_NGINX_IMAGE`.
+
+Sans ces variables, Docker Compose continue d'utiliser des noms d'images locaux et peut toujours reconstruire les services avec les Dockerfiles du projet.
 
 Secrets GitHub Actions a prevoir :
 
 ```text
 DB_DATABASE
-DB_USERNAME
 DB_PASSWORD
-DB_ROOT_PASSWORD
 SONAR_TOKEN
 ```
+
+Le push vers GitHub Container Registry utilise le `GITHUB_TOKEN` fourni automatiquement par GitHub Actions avec la permission `packages: write`.
 
 Les identifiants et mots de passe ne doivent pas etre ecrits directement dans le workflow ou dans le depot. Ils doivent etre stockes dans les secrets GitHub.
 
